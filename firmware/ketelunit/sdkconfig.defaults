@@ -25,5 +25,13 @@ CONFIG_MBEDTLS_HKDF_C=y
 # No automatic Matter OTA queries: updates only when the user starts them (R1, R2)
 CONFIG_ENABLE_OTA_REQUESTOR=n
 
+# Console (logs and input) on the built-in USB-Serial/JTAG: both boards only
+# have a USB-C port. Default UART0 would leave USB output-only.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
 # Matter shell on the serial console (e.g. `matter onboardingcodes ble`)
 CONFIG_ENABLE_CHIP_SHELL=y
+
+# Board: Waveshare ESP32-C6-Zero. Its WS2812 takes RGB byte order (red showed
+# as green with GRB, seen 2026-11-18). Set to n for the ESP32-C6-DevKitC-1.
+CONFIG_THERIQ_RGB_LED_ORDER_RGB=y

@@ -29,6 +29,7 @@
 #include <app-common/zap-generated/ids/Attributes.h>
 #include <app-common/zap-generated/ids/Clusters.h>
 
+#include <setup_payload/OnboardingCodesUtil.h>
 #include <app/server/Server.h>
 
 static const char *TAG = "theriq";
@@ -178,9 +179,14 @@ static void factory_reset_task(void * /*arg*/)
         if (second >= kResetHoldSeconds) {
             ESP_LOGW(TAG, "Factory reset: erasing fabrics and Wi-Fi, then restart");
             led_set(kLedLevel, 0, 0);  // solid red while erasing
-            // Erases the Matter NVS data (fabrics, Wi-Fi credentials) and
-            // restarts the chip; it does not return on success.
+            // Erases the Matter NVS data (fabrics, Wi-Fi credentials). It
+            // returns ESP_OK and the restart follows shortly after (seen on
+            // the C6-Zero: ~10 ms), so on success this task just waits for it
+            // with the LED solid red.
             esp_err_t err = esp_matter::factory_reset();
+            if (err == ESP_OK) {
+                vTaskDelay(portMAX_DELAY);
+            }
             ESP_LOGE(TAG, "Factory reset failed: %s", esp_err_to_name(err));
             held_ticks = 0;
             led_off();
@@ -304,6 +310,14 @@ extern "C" void app_main()
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to start Matter: %s", esp_err_to_name(err));
         abort();
+    }
+
+    // Print the QR code payload and the manual pairing code for BLE
+    // commissioning; esp-matter does not do this itself. It reads the Matter
+    // configuration, so it runs under the Matter stack lock.
+    {
+        lock::ScopedChipStackLock chip_lock(portMAX_DELAY);
+        PrintOnboardingCodes(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
     }
 
     // 4 KB stack: enough for logging and one attribute report.
