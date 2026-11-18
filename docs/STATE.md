@@ -39,4 +39,5 @@ Inkoop (`docs/FASE-0.md`, inkooplijst):
 - Waveshare C6-Zero: flashen lukt niet? BOOT ingedrukt houden bij het insteken van USB.
 - De led van de C6-Zero wil RGB-volgorde: `CONFIG_THERIQ_RGB_LED_ORDER_RGB=y` in `sdkconfig.defaults`; op de DevKitC-1
   waarschijnlijk `n` (GRB).
-- Seriële console: `matter esp attribute get 0x1 0x201 0x0` leest de kamertemperatuur (0,01 °C).
+- Seriële console via USB: `matter onboardingcodes ble`, `matter esp attribute get 0x1 0x201 0x1c` (SystemMode).
+  De kamertemperatuur (nullable) geeft daar een fout; die staat elke 10 s in de log.
