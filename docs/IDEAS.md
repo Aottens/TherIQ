@@ -1,0 +1,13 @@
+# TherIQ — Ideeën
+
+Aernout gooit ideeën in de chat, in elke vorm. Claude zet ze hier, met een id `IDEA-nn`, en bewaakt de scope. Een
+idee is **geen** toezegging en krijgt geen taak of code tot zijn fase gepland is.
+
+Hoe een idee beweegt: **nieuw** → **getrieerd** (Claude stelt een fase voor, wat het nu raakt, open vragen; Aernout
+bevestigt) → **backlog** (een TQ-rij) → **klaar** of **afgewezen** (met reden, zodat het niet opnieuw opduikt).
+
+Scope-regel: v1 is `docs/SPEC.md` met de mijlpaal van ADR-008. Een nieuw idee landt in een latere fase, tenzij Aernout
+het expliciet naar voren haalt. Dwingt een idee nu al een beslissing af, dan komt alleen die beslissing in de backlog.
+
+| Id | Idee | Status | Fase |
+| --- | --- | --- | --- |

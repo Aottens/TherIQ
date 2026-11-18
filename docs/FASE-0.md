@@ -27,7 +27,9 @@ Controleer actuele beschikbaarheid en of de interfaces op 3,3 V werken met de ES
 
 | Item | Aantal | Voor |
 | --- | --- | --- |
-| ESP32-C6-devkit (8 MB flash of meer) | 2 | Ketelunit-prototype en ketelsimulator |
+| ESP32-C6-DevKitC-1-N8 (8 MB flash; niet DevKitM-1, die heeft 4 MB) | 2 | Ketelunit-prototype en ketelsimulator |
+| Waveshare ESP32-C6-Zero, ESP32-C6FH8, 8 MB flash (al in huis) | 1 | Direct inzetbaar voor WP0.1–0.3 (zelfde chip en flash als de ketelunit); daarna kamerunit-prototype (WP0.9) |
+| USB-C-kabel met data | 1–2 | Flashen en seriële log |
 | Master-OpenTherm-interface (DIYLESS Master Shield of Ihor Melnyk-adapter) | 1 | OT-master op het prototype |
 | Slave-OpenTherm-shield (DIYLESS) | 1 | Ketelsimulator |
 | Kant-en-klare EMS-ESP-gateway (BBQKees) | 1 | WP0.4, de ketel leren kennen (D8) |
@@ -38,7 +40,7 @@ Controleer actuele beschikbaarheid en of de interfaces op 3,3 V werken met de ES
 
 ## Werkpakketten
 
-Elk werkpakket is klaar als het done-criterium aantoonbaar is gehaald. Testverslagen gaan in `docs/tests/`.
+Elk werkpakket is klaar als het done-criterium aantoonbaar is gehaald. De werkpakketten zijn opgesplitst in taken (TQ-nn) in `docs/BACKLOG.md`. Checklists en testverslagen gaan in `docs/tests/`.
 
 ### WP0.1 — Repo en toolchain
 

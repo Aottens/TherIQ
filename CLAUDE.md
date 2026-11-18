@@ -4,13 +4,32 @@
 
 **TherIQ**: een open-source, modulerende thermostaat voor OpenTherm- én EMS-ketels: volledig lokaal, geen cloud, geen abonnement, tegelijk bedienbaar vanuit Apple Home én Home Assistant via Matter, en als open hardware na te bouwen. Twee units: een **ketelunit** (ESP32-C6, Matter, ketelbus, regeling) naast de ketel en een **kamerunit** (sensor, e-paper, draaiknop) op de plek van de oude thermostaat, verbonden via de bestaande thermostaatkabel.
 
-Lees bij de start van elke sessie:
+Lees bij de start van elke sessie **alleen**:
 
-- `docs/SPEC.md`: volledige specificatie, eisen R1–R9, open beslissingen D0–D8. Bron van waarheid.
-- `docs/FASE-0.md`: het huidige werk, met werkpakketten en done-criteria.
+- `docs/STATE.md`: de overdracht: nu, volgende, wat op Aernout wacht.
+- `docs/BACKLOG.md`: de taken (TQ-nn) en de voorgestelde builds.
+
+Lees daarna alleen wat de taak nodig heeft:
+
+- `docs/SPEC.md`: volledige specificatie, eisen R1–R10, open beslissingen D0–D8. Bron van waarheid. Lees de secties die de taak raakt, niet het hele bestand.
+- `docs/FASE-0.md`: het werkpakket (WP) van de taak, met zijn done-criterium.
 - `docs/DECISIONS.md`: genomen beslissingen (ADR-log).
+- `docs/IDEAS.md`: ideeën die (nog) niet gepland zijn.
 
-**Huidige fase: 0, bewijs op devkits.** Begin bij WP0.1, tenzij Aernout anders zegt.
+**Huidige fase: 0, bewijs op devkits.** Wat nu aan de beurt is, staat in `docs/STATE.md`.
+
+## Werkwijze: taken, builds, overdracht
+
+Doel: elke sessie en elke subagent werkt met een kleine, volledige context. Overgenomen uit CMDMX, zonder GitHub-review en risk gate (ADR-011).
+
+1. **Taak.** Elk stuk werk is een rij in `docs/BACKLOG.md`: één zin, controleerbaar done-criterium, verwijzing naar WP en eis, grootte S/M/L. XL wordt eerst opgesplitst. Geen code voor werk zonder rij.
+2. **Build.** Eén sessie, één branch, één PR. Maximaal drie taken die bij elkaar horen (één gedrag over lagen, de ene heeft de andere nodig, of ze raken dezelfde code), waarvan maximaal één M; een L is een eigen build. Apart als één taak los teruggedraaid moet kunnen worden, of als een gate-3-run de rest zou ophouden. De hoofdsessie stelt builds voor op de `Builds:`-regel in de backlog; Aernout keurt ze goed.
+3. **Per taak een subagent.** De hoofdsessie schrijft eerst de test die moet slagen (pure logica: host test met het TQ-id in de naam). Een subagent krijgt een korte brief: TQ-id, done-criterium, de falende test, de bestanden die hij moet lezen en wat de vorige taak achterliet. Past de brief niet kort, splits dan de taak. De subagent schrijft de kleinste wijziging die de test groen maakt.
+4. **Review en uitleg.** De hoofdsessie draait de tests, leest de diff van elke taak vóór de volgende subagent start, en legt Aernout de code uit (zie *Werken met Aernout*). Eén commit per taak, zodat een taak los terug kan.
+5. **Stop.** Blijkt een taak groter dan zijn grootte, of deugt de aanpak niet: lever wat klaar is en zet de rest in de volgende build, met de `Builds:`-regel aangepast in die PR.
+6. **Afsluiten in dezelfde PR.** De taakrij wordt `done (datum, #PR)`, of `gate3: <checklist>` als alleen Aernouts run nog ontbreekt. `docs/STATE.md` wordt herschreven (nooit aangevuld, geen afgeronde taken erin). Een beslissing onderweg gaat in `docs/DECISIONS.md`. Aernout merget.
+7. **Gate 3.** Werk op hardware of de echte ketel krijgt een checklist in `docs/tests/` (zie `docs/tests/README.md`). Alleen Aernout vinkt af, in een kopie onder `docs/tests/runs/`.
+8. **Ideeën.** Een nieuw idee van Aernout gaat in `docs/IDEAS.md`, niet in de backlog of de code, tot zijn fase gepland is.
 
 ## Harde regels
 
