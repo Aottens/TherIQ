@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: firmware
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+env:
+  # Pinned toolchain (ADR-010): esp-matter release/v1.6.1 + ESP-IDF v6.0.2
+  BUILD_IMAGE: espressif/esp-matter:release-v1.6.1_idf_v6.0.2@sha256:a55d497c9b53e5a65789360e47ffb5cc3622a386e7b5bb76d2129578dc33c4e6
+
+jobs:
+  ketelunit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      # The esp-matter image is ~20 GB unpacked; the runner's preinstalled
+      # SDKs are removed first so it fits on disk.
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          docker system prune -af
+          df -h /
+
+      - name: Build
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE":/project -w /project/firmware/ketelunit "$BUILD_IMAGE" \
+            bash -c 'git config --global --add safe.directory "*" && idf.py build && idf.py merge-bin -o theriq-ketelunit.bin'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: theriq-ketelunit-${{ github.sha }}
+          path: |
+            firmware/ketelunit/build/theriq-ketelunit.bin
+            firmware/ketelunit/build/theriq_ketelunit.elf
+            firmware/ketelunit/dependencies.lock

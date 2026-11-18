@@ -1,0 +1,12 @@
+{
+  // TherIQ build environment. Same pinned image as CI (ADR-010):
+  // esp-matter release/v1.6.1 + ESP-IDF v6.0.2. Change the digest only via a new ADR.
+  "name": "TherIQ (esp-matter 1.6.1 / IDF 6.0.2)",
+  "image": "espressif/esp-matter:release-v1.6.1_idf_v6.0.2@sha256:a55d497c9b53e5a65789360e47ffb5cc3622a386e7b5bb76d2129578dc33c4e6",
+  "workspaceFolder": "/workspaces/TherIQ",
+  "customizations": {
+    "vscode": {
+      "extensions": ["espressif.esp-idf-extension", "ms-vscode.cpptools"]
+    }
+  }
+}
