@@ -5,7 +5,7 @@ TQ-02 (`docs/tests/devkit-flash.md`): flash dan dit image en vink daar de algeme
 Home of HA: dat is TQ-06.
 
 ## Benodigd
-- [ ] Waveshare ESP32-C6-Zero (ESP32-C6FH8, 8 MB; in huis) of ESP32-C6-DevKitC-1-N8
+- [ ] Waveshare ESP32-C6-Zero (esptool: ESP32-C6FH4 rev v0.2, 8 MB flash; in huis) of ESP32-C6-DevKitC-1-N8
 - [ ] USB-C-kabel die data doet (niet alleen laden)
 - [ ] Chrome op de Mac
 
