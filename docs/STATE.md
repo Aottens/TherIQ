@@ -37,5 +37,6 @@ Inkoop (`docs/FASE-0.md`, inkooplijst):
 - Geen Docker op de Mac en weinig schijfruimte: bouwen gebeurt in GitHub Actions; flashen met de ESP Web Flasher.
 - De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8.
 - Waveshare C6-Zero: flashen lukt niet? BOOT ingedrukt houden bij het insteken van USB.
-- Rood en groen van de led verwisseld? `CONFIG_THERIQ_RGB_LED_ORDER_RGB=y` in `sdkconfig.defaults`.
+- De led van de C6-Zero wil RGB-volgorde: `CONFIG_THERIQ_RGB_LED_ORDER_RGB=y` in `sdkconfig.defaults`; op de DevKitC-1
+  waarschijnlijk `n` (GRB).
 - Seriële console: `matter esp attribute get 0x1 0x201 0x0` leest de kamertemperatuur (0,01 °C).
