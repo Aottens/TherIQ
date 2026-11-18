@@ -344,7 +344,7 @@ Elke fase sluit af met een gate die aan de eisen uit 1 hangt; de volgende fase s
 | D5 | Gedrag van de ketel bij communicatieverlies | Per ketel en per bus verschillend | Testen op eigen ketel (EMS) en simulator (OT); vastleggen in de ketellijst |
 | D6 | Projectnaam | Beantwoord: **TherIQ** (ADR-007) | — |
 | D7 | Matter-certificering | Ja (kosten, lidmaatschap) / nee ("Uncertified" in Apple Home) | Nee voor v1; heroverwegen bij verkoop van kits |
-| D8 | EMS-hardware in fase 0 | Kant-en-klare EMS-ESP-gateway / zelfbouw naar de open referentieschakeling | Kant-en-klaar: eerst de ketel leren kennen, eigen interface pas daarna |
+| D8 | EMS-hardware in fase 0 | Kant-en-klare EMS-ESP-gateway / zelfbouw naar de open referentieschakeling | Beantwoord (ADR-013): BBQKees-interfacebord met EMS-ESP op een eigen ESP32 om de ketel te leren kennen; daarna hetzelfde bord aan de C6 |
 
 ## Bronnen
 

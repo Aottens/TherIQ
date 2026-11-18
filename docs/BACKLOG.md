@@ -23,11 +23,11 @@ Build A: TQ-04 + TQ-05 (voorgesteld).
 | TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | todo |
 | TQ-07 | SHT45-driver (I²C, CRC-controle, middeling) levert temperatuur en RV aan het Matter-endpoint; CRC en filter hebben host tests. | WP0.3 | M | todo |
 | TQ-08 | Temperatuur in Apple Home en HA wijkt < 0,3 °C af van een referentiethermometer naast de sensor. | WP0.3 | S | todo |
-| TQ-09 | EMS-ESP-gateway hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | todo |
+| TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | todo |
 | TQ-10 | `docs/ketels/nefit-topline-compact-hrc25-cw4.md` beschrijft lees-/schrijfwaarden, pollritme en antwoordtijden uit de log. | WP0.4 | S | todo |
 | TQ-11 | Ketel-API (`boiler_api`) als C++-interface met ADR: setpoint, CV aan/uit, status, modulatie, aanvoer/retour, druk, buiten, storing. | WP0.5 | S | todo |
 | TQ-12 | EMS-frame encode/decode en CRC met host tests (protocolkennis uit EMS-ESP, bronvermelding en NOTICE). | WP0.5 | M | todo |
-| TQ-13 | EMS-interface voor de C6 gekozen (ADR, licentie schema gecontroleerd) en besteld. | WP0.5 | S | todo |
+| TQ-13 | EMS-interface voor de C6 gekozen en besteld. | WP0.5 | S | done (2026-11-18, ADR-013) |
 | TQ-14 | EMS-driver (UART 9600, break-detectie) leest aanvoer, retour en modulatie van de eigen ketel. | WP0.5 | L | todo |
 | TQ-15 | Na akkoord schrijft de firmware een aanvoersetpoint en volgt de ketel dat aantoonbaar (log); terugweg beschreven. | WP0.5 | M | todo |
 | TQ-16 | OpenTherm-frame encode/decode en pariteit met host tests. | WP0.6 | S | todo |

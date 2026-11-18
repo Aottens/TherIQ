@@ -18,7 +18,7 @@ Runs die alleen Aernout kan doen (gate 3):
 
 Inkoop (`docs/FASE-0.md`, inkooplijst):
 - 2× ESP32-C6-DevKitC-1-N8, SHT45-breakout, logic analyzer, USB-C-datakabel.
-- EMS-ESP-gateway (BBQKees) voor WP0.4: vaak lange levertijd, vroeg bestellen.
+- BBQKees EMS Interface Board V3.1 (bbqkees-electronics.nl, € 34,95) voor WP0.4 en WP0.5 (ADR-013).
 
 ## Geblokkeerd
 - Niets.

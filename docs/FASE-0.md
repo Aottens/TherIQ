@@ -17,7 +17,7 @@ Gate fase 0: R1 en R3 gemeten, EMS lezen en schrijven op de eigen ketel, de voll
 ## Veiligheidsregels voor fase 0
 
 - **Eerst alleen lezen.** Niets naar de echte ketel schrijven zonder expliciet akkoord van Aernout per test.
-- **Eén regelaar tegelijk.** Nooit twee partijen (bestaande thermostaat, EMS-ESP-gateway, eigen firmware, EMS-OT-converter) tegelijk setpoints laten schrijven.
+- **Eén regelaar tegelijk.** Nooit twee partijen (bestaande thermostaat, EMS-ESP, eigen firmware, EMS-OT-converter) tegelijk setpoints laten schrijven.
 - **Terugweg vooraf klaar.** Bij elke schrijftest is beschreven hoe de oude situatie in één handeling terugkomt.
 - De ketel houdt zijn eigen beveiliging. Wij sturen alleen setpoints.
 
@@ -32,8 +32,7 @@ Controleer actuele beschikbaarheid en of de interfaces op 3,3 V werken met de ES
 | USB-C-kabel met data | 1–2 | Flashen en seriële log |
 | Master-OpenTherm-interface (DIYLESS Master Shield of Ihor Melnyk-adapter) | 1 | OT-master op het prototype |
 | Slave-OpenTherm-shield (DIYLESS) | 1 | Ketelsimulator |
-| Kant-en-klare EMS-ESP-gateway (BBQKees) | 1 | WP0.4, de ketel leren kennen (D8) |
-| EMS-interface voor de C6 | 1 | WP0.5; BBQKees-interfaceprint of zelfbouw naar de open referentieschakeling, keuze in WP0.5 |
+| BBQKees EMS Interface Board V3.1 (€ 34,95, bbqkees-electronics.nl, gezien 2026-11-18) | 1 | WP0.4 met een klassieke ESP32-WROOM uit de la en EMS-ESP; daarna WP0.5 aan de C6 (ADR-013) |
 | SHT45-breakout | 1 | WP0.3 |
 | Nefit EMS-OT-converter (art. 7746901847) | 1, optioneel | WP0.7 |
 | Logic analyzer + multimeter | 1 | Timing en rusttoestand meten |
@@ -63,7 +62,7 @@ Elk werkpakket is klaar als het done-criterium aantoonbaar is gehaald. De werkpa
 
 ### WP0.4 — De eigen ketel leren kennen (alleen lezen)
 
-- Kant-en-klare EMS-ESP-gateway aan de ketel; standaardfirmware EMS-ESP.
+- BBQKees EMS Interface Board V3.1 met een klassieke ESP32-WROOM (4 MB) en de standaardfirmware EMS-ESP (`ESP32-4MB`-build) aan de ketel, parallel aan de bestaande thermostaat (ADR-013).
 - Vastleggen: welke waarden de ketel geeft, welke schrijfbaar zijn, hoe de bestaande thermostaat op de bus praat, pollritme en antwoordtijden.
 - **Klaar als**: `docs/ketels/nefit-topline-compact-hrc25-cw4.md` bestaat, met een lijst lees-/schrijfwaarden en een ruwe buslog van minimaal 24 uur in `docs/ketels/logs/`.
 
@@ -71,7 +70,7 @@ Elk werkpakket is klaar als het done-criterium aantoonbaar is gehaald. De werkpa
 
 - Ontwerp eerst de abstracte ketel-API (C++-interface): aanvoersetpoint schrijven, CV aan/uit, status, modulatie, aanvoer/retour, druk, buitentemperatuur, storing. OpenTherm en EMS worden implementaties hiervan.
 - EMS-driver op de C6, met protocolkennis uit EMS-ESP (GPL-3.0, bronvermelding in de code en in NOTICE).
-- Kies hier de EMS-interface voor de C6 en leg de keuze vast als ADR.
+- Hetzelfde BBQKees EMS Interface Board V3.1 uit WP0.4 gaat aan de C6 (ADR-013).
 - **Klaar als**: eigen firmware leest aanvoer, retour en modulatie van de eigen ketel; daarna, na akkoord van Aernout, schrijft hij een aanvoersetpoint en volgt de ketel dat aantoonbaar (log).
 
 ### WP0.6 — OpenTherm-driver en ketelsimulator
