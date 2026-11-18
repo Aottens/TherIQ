@@ -65,7 +65,7 @@ Aernout is OT/IT-engineer (PLC, SCADA, Ignition) met een UX/HCD-achtergrond. Reg
 - Pure logica (regelaar, frame-encoding en -decoding, stooklijn) zonder hardware-afhankelijkheden, met host-side unit tests in CI.
 - OpenTherm-timing via de RMT-peripheral, niet bitbangen. EMS via UART, 9600 baud, met break-detectie.
 - Sensorwaarden zijn gesynchroniseerd vóórdat de Matter-stack start.
-- Hardware in KiCad, behuizing in een open, parametrisch CAD-pakket. Geen bestanden die alleen in betaalde software opengaan.
+- Hardware in KiCad. Behuizing van het prototype in Fusion (ADR-012): naast het Fusion-bestand altijd STEP en STL in de repo. De CAD-keuze voor de v1-behuizing is nog open.
 
 ## Context
 

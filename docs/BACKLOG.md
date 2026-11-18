@@ -42,5 +42,5 @@ Build A: TQ-04 + TQ-05 (voorgesteld).
 | TQ-25 | Na akkoord 48 u stoken op de eigen ketel zonder ingrijpen, met log; bediening vanuit Apple Home én HA. | WP0.8 | S | todo |
 | TQ-26 | Voeding en verbinding van het kamerunit-prototype beslist (ADR). | WP0.9 | S | todo |
 | TQ-27 | E-paper en draaiknop op de Waveshare C6-Zero tonen kamertemperatuur en setpoint; draaien wijzigt het setpoint. | WP0.9 | M | todo |
-| TQ-28 | Prototypebehuizing (open, parametrisch CAD, PETG/ASA) geprint en passend om de electronica. | WP0.9 | M | todo |
+| TQ-28 | Prototypebehuizing in Fusion (STEP en STL in de repo, PETG/ASA) geprint en passend om de elektronica. | WP0.9 | M | todo |
 | TQ-29 | Prototype hangt aan de wand; een setpoint via de knop staat binnen 2 s in Apple Home en HA. | WP0.9 | S | todo |
