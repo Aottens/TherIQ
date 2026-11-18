@@ -20,6 +20,7 @@
 
 #include <esp_matter.h>
 #include <esp_matter_console.h>
+#include <thermostat_ids.h>  // cluster/attribute IDs; not pulled in by esp_matter.h
 
 #include <app/server/Server.h>
 
