@@ -25,7 +25,7 @@ De toolchain zit in één vastgepind Docker-image: esp-matter `release/v1.6.1` m
 ```bash
 docker run --rm -v "$PWD":/project -w /project/firmware/ketelunit \
   espressif/esp-matter:release-v1.6.1_idf_v6.0.2@sha256:a55d497c9b53e5a65789360e47ffb5cc3622a386e7b5bb76d2129578dc33c4e6 \
-  bash -c 'idf.py build && idf.py merge-bin -o theriq-ketelunit.bin'
+  bash -c 'cd /project/firmware/ketelunit && idf.py build && idf.py merge-bin -o theriq-ketelunit.bin'
 ```
 
 Zonder lokale toolchain: elke push bouwt in GitHub Actions; het image `theriq-ketelunit.bin` staat als artifact bij de run.

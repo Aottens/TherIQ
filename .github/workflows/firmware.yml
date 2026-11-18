@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: |
           docker run --rm -v "$GITHUB_WORKSPACE":/project -w /project/firmware/ketelunit "$BUILD_IMAGE" \
-            bash -c 'git config --global --add safe.directory "*" && idf.py build && idf.py merge-bin -o theriq-ketelunit.bin'
+            bash -c 'cd /project/firmware/ketelunit && git config --global --add safe.directory "*" && idf.py build && idf.py merge-bin -o theriq-ketelunit.bin'
 
       - uses: actions/upload-artifact@v4
         with:
