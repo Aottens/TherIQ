@@ -25,5 +25,9 @@ CONFIG_MBEDTLS_HKDF_C=y
 # No automatic Matter OTA queries: updates only when the user starts them (R1, R2)
 CONFIG_ENABLE_OTA_REQUESTOR=n
 
+# Console (logs and input) on the built-in USB-Serial/JTAG: both boards only
+# have a USB-C port. Default UART0 would leave USB output-only.
+CONFIG_ESP_CONSOLE_USB_SERIAL_JTAG=y
+
 # Matter shell on the serial console (e.g. `matter onboardingcodes ble`)
 CONFIG_ENABLE_CHIP_SHELL=y

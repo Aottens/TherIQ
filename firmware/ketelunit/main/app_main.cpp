@@ -29,6 +29,7 @@
 #include <app-common/zap-generated/ids/Attributes.h>
 #include <app-common/zap-generated/ids/Clusters.h>
 
+#include <app/server/OnboardingCodesUtil.h>
 #include <app/server/Server.h>
 
 static const char *TAG = "theriq";
@@ -304,6 +305,14 @@ extern "C" void app_main()
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "Failed to start Matter: %s", esp_err_to_name(err));
         abort();
+    }
+
+    // Print the QR code payload and the manual pairing code for BLE
+    // commissioning; esp-matter does not do this itself. It reads the Matter
+    // configuration, so it runs under the Matter stack lock.
+    {
+        lock::ScopedChipStackLock chip_lock(portMAX_DELAY);
+        PrintOnboardingCodes(chip::RendezvousInformationFlags(chip::RendezvousInformationFlag::kBLE));
     }
 
     // 4 KB stack: enough for logging and one attribute report.
