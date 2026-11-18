@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Board settings for the TherIQ boiler unit. Defaults fit both the Waveshare
+# ESP32-C6-Zero and the ESP32-C6-DevKitC-1 (BOOT on GPIO9, WS2812 on GPIO8).
+
+menu "TherIQ board"
+
+config THERIQ_BOOT_BUTTON_GPIO
+    int "BOOT button GPIO (active low)"
+    range 0 30
+    default 9
+    help
+        Hold this button 10 s for a Matter factory reset.
+
+config THERIQ_RGB_LED_GPIO
+    int "WS2812 RGB LED data GPIO"
+    range 0 30
+    default 8
+
+config THERIQ_RGB_LED_ORDER_RGB
+    bool "RGB LED expects RGB byte order instead of GRB"
+    default n
+    help
+        Most WS2812 LEDs take GRB. Turn this on if red and green appear swapped.
+
+endmenu

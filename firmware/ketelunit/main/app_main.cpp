@@ -7,6 +7,8 @@
 //   endpoint 1  Thermostat, heating only (SystemMode Off/Heat)
 // LocalTemperature comes from a fake sensor (slow sine around 20 °C) until the
 // SHT45 driver replaces it (TQ-07). Nothing drives the boiler yet.
+// Holding BOOT for 10 s does a Matter factory reset (fabrics + Wi-Fi); the
+// RGB LED shows the countdown.
 
 #include <cmath>
 #include <cstdint>
@@ -14,9 +16,12 @@
 #include <esp_err.h>
 #include <esp_log.h>
 #include <esp_timer.h>
+#include <driver/gpio.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
+#include <led_strip.h>
 #include <nvs_flash.h>
+#include <sdkconfig.h>
 
 #include <esp_matter.h>
 #include <esp_matter_console.h>
@@ -66,6 +71,118 @@ static void sensor_task(void * /*arg*/)
         esp_matter_attr_val_t val = esp_matter_nullable_int16(fake_room_temperature());
         attribute::report(s_thermostat_endpoint_id, thermostat_ids::Id,
                           thermostat_ids::attribute::LocalTemperature::Id, &val);
+    }
+}
+
+// --- Factory reset: hold BOOT 10 s -----------------------------------------
+//
+// Why a physical reset: Apple Home cannot force-remove a fabric from a device
+// (SPEC §3), so the user needs a way to wipe pairings without a computer.
+//
+// The button is polled every 100 ms instead of using an interrupt: we need the
+// hold time anyway, a press is never shorter than 100 ms, and polling has no
+// debounce problems (a bounce at most shifts the count by one tick).
+static constexpr TickType_t kPollInterval = pdMS_TO_TICKS(100);
+static constexpr int kTicksPerSecond = 10;
+static constexpr int kResetHoldSeconds = 10;
+static constexpr int kWarnFromSecond = 7;  // LED turns red for the last 3 s
+static constexpr uint32_t kLedLevel = 40;  // 0..255; the WS2812 is very bright
+
+static led_strip_handle_t s_led = nullptr;
+
+static void led_set(uint32_t r, uint32_t g, uint32_t b)
+{
+    if (s_led == nullptr) {
+        return;
+    }
+    led_strip_set_pixel(s_led, 0, r, g, b);
+    led_strip_refresh(s_led);
+}
+
+static void led_off()
+{
+    if (s_led != nullptr) {
+        led_strip_clear(s_led);
+    }
+}
+
+// The WS2812 needs an 800 kHz bit stream with exact pulse widths. The RMT
+// peripheral generates it in hardware, so the CPU does not have to bit-bang.
+static void led_init()
+{
+    led_strip_config_t strip_config = {};
+    strip_config.strip_gpio_num = CONFIG_THERIQ_RGB_LED_GPIO;
+    strip_config.max_leds = 1;
+    strip_config.led_model = LED_MODEL_WS2812;
+#if CONFIG_THERIQ_RGB_LED_ORDER_RGB
+    strip_config.color_component_format = LED_STRIP_COLOR_COMPONENT_FMT_RGB;
+#else
+    strip_config.color_component_format = LED_STRIP_COLOR_COMPONENT_FMT_GRB;
+#endif
+    led_strip_rmt_config_t rmt_config = {};
+    rmt_config.resolution_hz = 10 * 1000 * 1000;  // 10 MHz: 0.1 us per RMT tick
+
+    // A missing LED must not stop the thermostat: log and run without it.
+    esp_err_t err = led_strip_new_rmt_device(&strip_config, &rmt_config, &s_led);
+    if (err != ESP_OK) {
+        ESP_LOGW(TAG, "RGB LED on GPIO%d not available: %s", CONFIG_THERIQ_RGB_LED_GPIO, esp_err_to_name(err));
+        s_led = nullptr;
+        return;
+    }
+    led_off();
+}
+
+static void factory_reset_task(void * /*arg*/)
+{
+    const gpio_num_t button = static_cast<gpio_num_t>(CONFIG_THERIQ_BOOT_BUTTON_GPIO);
+    gpio_config_t io = {};
+    io.pin_bit_mask = 1ULL << button;
+    io.mode = GPIO_MODE_INPUT;
+    io.pull_up_en = GPIO_PULLUP_ENABLE;  // the button pulls the pin to GND
+    ESP_ERROR_CHECK(gpio_config(&io));
+
+    int held_ticks = 0;
+    for (;;) {
+        vTaskDelay(kPollInterval);
+        const bool pressed = gpio_get_level(button) == 0;
+
+        if (!pressed) {
+            if (held_ticks > 0) {
+                ESP_LOGI(TAG, "Factory reset cancelled");
+                led_off();
+            }
+            held_ticks = 0;
+            continue;
+        }
+
+        ++held_ticks;
+        const int second = held_ticks / kTicksPerSecond;
+        if (held_ticks % kTicksPerSecond == 0 && second < kResetHoldSeconds) {
+            ESP_LOGW(TAG, "Factory reset in %d s, release BOOT to cancel", kResetHoldSeconds - second);
+        }
+
+        // Countdown: blink once per second (on for the first half), blue at
+        // first, red for the last seconds. Blue stays blue if R and G are
+        // swapped, so the start of the countdown is always recognisable.
+        const bool on = (held_ticks % kTicksPerSecond) < kTicksPerSecond / 2;
+        if (!on) {
+            led_off();
+        } else if (second < kWarnFromSecond) {
+            led_set(0, 0, kLedLevel);
+        } else {
+            led_set(kLedLevel, 0, 0);
+        }
+
+        if (second >= kResetHoldSeconds) {
+            ESP_LOGW(TAG, "Factory reset: erasing fabrics and Wi-Fi, then restart");
+            led_set(kLedLevel, 0, 0);  // solid red while erasing
+            // Erases the Matter NVS data (fabrics, Wi-Fi credentials) and
+            // restarts the chip; it does not return on success.
+            esp_err_t err = esp_matter::factory_reset();
+            ESP_LOGE(TAG, "Factory reset failed: %s", esp_err_to_name(err));
+            held_ticks = 0;
+            led_off();
+        }
     }
 }
 
@@ -190,9 +307,14 @@ extern "C" void app_main()
     // 4 KB stack: enough for logging and one attribute report.
     xTaskCreate(sensor_task, "fake_sensor", 4096, nullptr, 5, nullptr);
 
+    led_init();
+    xTaskCreate(factory_reset_task, "factory_reset", 3072, nullptr, 2, nullptr);
+
 #if CONFIG_ENABLE_CHIP_SHELL
-    // Serial console: `matter help`, `matter onboardingcodes ble`, `matter esp factoryreset`.
+    // Serial console: `matter help`, `matter onboardingcodes ble`, `matter esp factoryreset`,
+    // `matter esp attribute get 0x1 0x201 0x0` (endpoint, cluster, attribute: LocalTemperature).
     esp_matter::console::diagnostics_register_commands();
+    esp_matter::console::attribute_register_commands();
     esp_matter::console::wifi_register_commands();
     esp_matter::console::factoryreset_register_commands();
     esp_matter::console::init();

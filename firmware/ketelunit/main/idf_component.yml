@@ -1,0 +1,5 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Components from the ESP Component Registry; exact versions, resolved hashes
+# are in ../dependencies.lock.
+dependencies:
+  espressif/led_strip: "==3.0.3"
