@@ -14,12 +14,12 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 
 ## Volgende
 1. TQ-06: koppelen in Apple Home, daarna multi-admin in HA (R1, R3). Het bord is gewist en wacht op koppelen.
-2. TQ-02 afronden: alleen "bordje na 5 minuten lauw" staat nog open in `docs/tests/devkit-flash.md`.
-3. TQ-03 (host tests in CI) als eerste bouwtaak; daarna de SHT45 (TQ-07) in plaats van de nepsensor.
+   Als eigen build met gate-3-checklist, klaargezet door de planningssessie.
+2. TQ-03 (host tests in CI) als eerste bouwtaak; daarna de SHT45 (TQ-07) in plaats van de nepsensor.
 
 ## Wacht op Aernout
 Runs die alleen Aernout kan doen (gate 3):
-- TQ-02 flashen en opstartlog (`docs/tests/devkit-flash.md`).
+- Geen open runs. Volgende: TQ-06 (koppelen), zodra die build er is.
 
 Inkoop (`docs/FASE-0.md`, inkooplijst):
 - 2× ESP32-C6-DevKitC-1-N8, SHT45-breakout, logic analyzer, USB-C-datakabel.
