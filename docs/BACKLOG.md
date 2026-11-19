@@ -20,7 +20,7 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 | TQ-03 | Host-side unit tests (pure logica, zonder ESP-IDF) draaien in CI als eigen job; één voorbeeldtest faalt aantoonbaar als de logica breekt. | conventie | S | todo |
 | TQ-04 | Matter-endpoint Thermostat (Heat/Off, setpoint, kamertemperatuur) met nepsensor (langzame sinus), waarde gezet vóór `esp_matter::start`; build groen. | WP0.2 | M | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
 | TQ-05 | BOOT-knop 10 s ingedrukt wist fabrics en wifi; de RGB-led laat het aftellen zien. | WP0.2 | S | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
-| TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | todo |
+| TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | gate3: `docs/tests/matter-pairing.md`; Apple Home gekoppeld (deelrun `docs/tests/runs/2026-11-19-TQ-06-apple.md`), multi-admin, R3 en R1 wachten op TQ-30 |
 | TQ-07 | SHT45-driver (I²C, CRC-controle, middeling) levert temperatuur en RV aan het Matter-endpoint; CRC en filter hebben host tests. | WP0.3 | M | todo |
 | TQ-08 | Temperatuur in Apple Home en HA wijkt < 0,3 °C af van een referentiethermometer naast de sensor. | WP0.3 | S | todo |
 | TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | todo |
@@ -44,3 +44,4 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 | TQ-27 | E-paper en draaiknop op de Waveshare C6-Zero tonen kamertemperatuur en setpoint; draaien wijzigt het setpoint. | WP0.9 | M | todo |
 | TQ-28 | Prototypebehuizing in Fusion (STEP en STL in de repo, PETG/ASA) geprint en passend om de elektronica. | WP0.9 | M | todo |
 | TQ-29 | Prototype hangt aan de wand; een setpoint via de knop staat binnen 2 s in Apple Home en HA. | WP0.9 | S | todo |
+| TQ-30 | Home Assistant draait met de Matter-integratie (Matter Server) en IPv6 aan op de netwerkinterface, in hetzelfde netwerk als de ketelunit. | WP0.2, R3 | S | todo (Aernout) |
