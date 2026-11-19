@@ -11,3 +11,4 @@ het expliciet naar voren haalt. Dwingt een idee nu al een beslissing af, dan kom
 
 | Id | Idee | Status | Fase |
 | --- | --- | --- | --- |
+| IDEA-01 | Koppelvenster opnieuw openen zonder reset: een korte druk op BOOT (of later de draaiknop of web-UI) start BLE-adverteren opnieuw als het bord nog geen fabric heeft. Nu sluit het venster ~15 min na opstarten (deelrun TQ-06, 2026-11-19). | nieuw | 0 of 2 |

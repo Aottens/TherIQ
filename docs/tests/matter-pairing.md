@@ -2,7 +2,8 @@
 
 Gate 3: alleen Aernout vinkt af. Kopieer naar `docs/tests/runs/<datum>-TQ-06.md` voor een run. Uitgangspunt: het bord
 draait de ketelunit-firmware van `main` (zie `docs/tests/thermostat-flash.md`) en is gewist (BOOT 10 s), dus het
-wacht op koppelen. Er wordt niets naar een ketel geschreven.
+wacht op koppelen. Er wordt niets naar een ketel geschreven. Is het bord al gekoppeld in Apple Home (deelrun
+`docs/tests/runs/2026-11-19-TQ-06-apple.md`), sla dan *Koppelen in Apple Home* over.
 
 Wat er bij het koppelen gebeurt (commissioning):
 1. De iPhone vindt het bord via **BLE** en zet met de koppelcode een versleutelde sessie op (PASE: de code is het
@@ -39,11 +40,16 @@ Wat er bij het koppelen gebeurt (commissioning):
 
 ## Koppelen in Apple Home
 - [ ] Seriële log open laten lopen
+- [ ] Bord minder dan 15 min geleden opgestart. Zonder fabric adverteert het maar ~15 min via BLE; daarna vindt de
+      iPhone het niet meer ("Accessoire niet gevonden"). Langer aan: USB eruit en erin (of reset), dan meteen koppelen
 - [ ] Woning-app → **+** → Voeg accessoire toe → QR-code scannen (of "Meer opties" en de handmatige code)
 - [ ] Melding **"Niet-gecertificeerd accessoire"** verschijnt (verwacht, test-vendor-ID 0xFFF1, SPEC §3) → "Voeg toch toe"
-- [ ] Log: `Commissioning session started`, dan `Fabric added, fabrics now: 1`, dan `Commissioning complete`
+- [ ] Log: `Commissioning session started`, dan `Fabric added, fabrics now: 1` en `Commissioning complete`, en
+      direct daarna nog eens met `fabrics now: 2`: Apple koppelt twee keer (fabric van iOS zelf en van Apple Home).
+      Een losse regel `esp_wifi_connect() failed: ESP_ERR_WIFI_CONN` vlak voor `wifi:connected` is onschuldig
 - [ ] Accessoire staat als thermostaat in de Woning-app, **niet** als "Niet ondersteund"
-- [ ] Kamertemperatuur zichtbaar in Apple Home: ________ °C, gelijk aan de log (0x0000 / 100) binnen 0,1 °C
+- [ ] Kamertemperatuur zichtbaar in Apple Home: ________ °C, gelijk aan de log (0x0000 / 100) binnen de afronding
+      van de app (de tegel rondt af op 0,5 °C)
 - [ ] Modus toont Verwarmen/Uit; geen Koelen of Auto
 
 ## Multi-admin: koppelen in HA
@@ -51,7 +57,7 @@ Wat er bij het koppelen gebeurt (commissioning):
       (de code geldt een paar minuten; log: koppelvenster open)
 - [ ] HA-companion-app → Instellingen → Apparaten → Matter → Apparaat toevoegen → **"Nee, het is al in gebruik"**
       (of: "Het is al toegevoegd aan een andere app") → code invoeren
-- [ ] Log: `Fabric added, fabrics now: 2`, `Commissioning complete`
+- [ ] Log: `Fabric added, fabrics now: 3`, `Commissioning complete` (twee van Apple, één van HA)
 - [ ] Apparaat in HA met een climate-entiteit; kamertemperatuur gelijk aan Apple Home: ________ °C
 - [ ] Apple Home werkt nog na het koppelen in HA (setpoint even aanpassen en terugzetten)
 
