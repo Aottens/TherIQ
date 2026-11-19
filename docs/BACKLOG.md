@@ -9,14 +9,14 @@ Status (eerste woord van de cel): `todo` · `doing` · `done` · `gate3` · `blo
 - Taken op de echte ketel die schrijven, zijn altijd gate 3 en vragen per test akkoord plus een beschreven terugweg.
 
 **Builds** (een build = één sessie, één branch, één PR; zie CLAUDE.md):
-Build A: TQ-04 + TQ-05 (klaar, #1).
+Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 
 ## Fase 0 — bewijs op devkits
 
 | Id | Taak (één zin, controleerbaar) | WP / eis | Grootte | Status |
 | --- | --- | --- | --- | --- |
 | TQ-01 | CI bouwt een lege Matter-app voor esp32c6 groen met de vastgepinde toolchain. | WP0.1 | S | done (2026-11-18) |
-| TQ-02 | De CI-build draait geflasht op een C6-devkit; de log toont `TherIQ boiler unit started` en de koppelcodes. | WP0.1 | S | gate3: `docs/tests/devkit-flash.md` |
+| TQ-02 | De CI-build draait geflasht op een C6-devkit; de log toont `TherIQ boiler unit started` en de koppelcodes. | WP0.1 | S | done (2026-11-18, run `docs/tests/runs/2026-11-18-TQ-02.md`) |
 | TQ-03 | Host-side unit tests (pure logica, zonder ESP-IDF) draaien in CI als eigen job; één voorbeeldtest faalt aantoonbaar als de logica breekt. | conventie | S | todo |
 | TQ-04 | Matter-endpoint Thermostat (Heat/Off, setpoint, kamertemperatuur) met nepsensor (langzame sinus), waarde gezet vóór `esp_matter::start`; build groen. | WP0.2 | M | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
 | TQ-05 | BOOT-knop 10 s ingedrukt wist fabrics en wifi; de RGB-led laat het aftellen zien. | WP0.2 | S | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
