@@ -33,7 +33,6 @@ Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), d
 - Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen
-- WP0.9: hoe het kamerunit-prototype aan de wand voeding en verbinding krijgt (TQ-26).
 - IDEA-01 (koppelvenster opnieuw openen zonder reset) triëren.
 
 ## Goed om te weten
@@ -47,7 +46,8 @@ Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), d
 - BOOT 10 s = Matter-fabrieksreset met led-aftelling (ADR-014). Bord niet resetten zonder reden.
 - Een extra controller koppelen: Apple Home → accessoire → Schakel koppelmodus in; die code in de andere app.
 - QR-code lokaal: `uvx --from "qrcode[pil]==8.2" qr "MT:..." > qr.png`; niet de `QRCodeUrl` uit de log (website).
-- De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8.
+- De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8. Daarna voedt de thermostaatkabel (2 aders)
+  het kamerunit-prototype (ADR-017).
 - Waveshare C6-Zero: flashen lukt niet? BOOT ingedrukt houden bij het insteken van USB. Led wil RGB-volgorde
   (`CONFIG_THERIQ_RGB_LED_ORDER_RGB=y`); op de DevKitC-1 waarschijnlijk GRB.
 - Seriële console via USB: `matter onboardingcodes ble`, `matter config`, `matter esp attribute get 0x1 0x201 0x1c`.
