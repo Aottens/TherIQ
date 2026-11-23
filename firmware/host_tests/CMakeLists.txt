@@ -26,3 +26,7 @@ target_include_directories(ems_frame PUBLIC ${COMPONENTS}/ems_frame/include)
 add_executable(test_ems_crc test_ems_crc.cpp)
 target_link_libraries(test_ems_crc ems_frame)
 add_test(NAME TQ-03_ems_crc COMMAND test_ems_crc)
+
+add_executable(test_ems_frame test_ems_frame.cpp)
+target_link_libraries(test_ems_frame ems_frame)
+add_test(NAME TQ-12_ems_frame COMMAND test_ems_frame)
