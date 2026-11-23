@@ -1,0 +1,15 @@
+TherIQ
+Copyright 2026 The TherIQ contributors
+
+The firmware is licensed under GPL-3.0-or-later (LICENSES/GPL-3.0-or-later.txt).
+
+This product includes protocol knowledge and code derived from third parties:
+
+EMS-ESP
+  https://github.com/emsesp/EMS-ESP32
+  Copyright 2020-2026 emsesp.org
+  License: GPL-3.0-or-later
+  Used for: the EMS telegram format and CRC in
+  firmware/ketelunit/components/ems_frame/ (from tag v3.9.1,
+  src/core/telegram.cpp), and the real telegrams used as test vectors in
+  firmware/host_tests/ (from tag v3.9.1, src/test/test.cpp).
