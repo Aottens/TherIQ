@@ -8,25 +8,26 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
   (ADR-008).
 - De ketelunit-firmware (`594135d`) draait op de Waveshare C6-Zero als Matter-thermostaat (endpoint 1, alleen
   verwarmen, Off/Heat) met een nepsensor (sinus 20 ± 1 °C, periode 10 min).
-- Het bord is **gekoppeld in Apple Home** ("TherIQ", Woonkamer): herkend als thermostaat, modi Uit/Verwarming,
-  temperatuur ververst. Apple zette twee fabrics op het bord (iOS en Apple Home). Geen firmwarewijziging nodig.
+- Het bord zit tegelijk in **Apple Home en Home Assistant** (multi-admin, 3 fabrics: twee van Apple, één van HA).
+  **R3 gehaald**: setpoint en modus komen in beide richtingen vrijwel direct over. Geen firmwarewijziging nodig.
+- **R1 nog niet gemeten** (WAN-kabel uit): alleen die sectie van de TQ-06-run ontbreekt.
+- HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
 - BOOT 10 s = Matter-fabrieksreset met led-aftelling (ADR-014 voor pinnen en ledvolgorde).
 
 ## Volgende
 1. TQ-03 (host tests in CI) als eerste bouwtaak; daarna TQ-07 (SHT45) zodra de breakout er is.
-2. TQ-06 afmaken zodra HA met Matter draait (TQ-30): multi-admin, R3 en R1 in één run met
-   `docs/tests/matter-pairing.md`. Het bord blijft gekoppeld in Apple Home; niet resetten.
+2. TQ-31 (vendor- en productnaam in Basic Information) is klein; kan mee in een build die toch flasht.
 
 ## Wacht op Aernout
-- TQ-30: Home Assistant installeren met de Matter-integratie (Matter Server) en IPv6 aan.
-- Daarna de rest van de TQ-06-run (gate 3).
+- TQ-06, sectie R1 van `docs/tests/matter-pairing.md`: op een moment dat het huis 5 minuten zonder internet kan.
+  Mobiele data op de iPhone uit, WAN-kabel uit, setpoint beide kanten, alles terug. Bord niet resetten.
 
 Inkoop (`docs/FASE-0.md`, inkooplijst):
 - 2× ESP32-C6-DevKitC-1-N8, SHT45-breakout, logic analyzer, USB-C-datakabel.
 - BBQKees EMS Interface Board V3.1 (bbqkees-electronics.nl, € 34,95) voor WP0.4 en WP0.5 (ADR-013).
 
 ## Geblokkeerd
-- R3 en R1 (gate van fase 0) op TQ-30.
+- Gate van fase 0: R1 wacht op Aernouts run.
 
 ## Aan Aernout te beslissen
 - WP0.9: hoe het kamerunit-prototype aan de wand voeding en verbinding krijgt (TQ-26).
@@ -35,8 +36,9 @@ Inkoop (`docs/FASE-0.md`, inkooplijst):
 ## Goed om te weten
 - Geen Docker op de Mac en weinig schijfruimte: bouwen gebeurt in GitHub Actions. Flashen kan met de ESP Web Flasher
   of vanaf de Mac: `uvx --from esptool==5.1.0 esptool --port /dev/cu.usbmodem1101 write-flash 0x0 <bin>`.
+  Een nieuw image flashen **zonder** `erase-flash` behoudt de fabrics; met erase moet opnieuw gekoppeld worden.
 - Zonder fabric adverteert het bord maar ~15 min via BLE na het opstarten; daarna eerst resetten, dan koppelen.
-- HA wordt fabric 3 (Apple gebruikt er twee); de Matter-SDK staat er standaard 5 toe.
+- Een extra controller koppelen: Apple Home → accessoire → Schakel koppelmodus in; die code in de andere app.
 - QR-code lokaal: `uvx --from "qrcode[pil]==8.2" qr "MT:..." > qr.png`; niet de `QRCodeUrl` uit de log (website).
 - De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8.
 - Waveshare C6-Zero: flashen lukt niet? BOOT ingedrukt houden bij het insteken van USB.
