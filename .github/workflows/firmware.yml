@@ -11,6 +11,18 @@ env:
   BUILD_IMAGE: espressif/esp-matter:release-v1.6.1_idf_v6.0.2@sha256:a55d497c9b53e5a65789360e47ffb5cc3622a386e7b5bb76d2129578dc33c4e6
 
 jobs:
+  # Pure-logic unit tests on the runner itself, no ESP-IDF image (ADR-016).
+  host-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and run host tests
+        run: |
+          cmake -S firmware/host_tests -B build/host
+          cmake --build build/host
+          ctest --test-dir build/host --output-on-failure
+
   ketelunit:
     runs-on: ubuntu-24.04
     timeout-minutes: 60

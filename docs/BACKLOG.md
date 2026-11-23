@@ -10,6 +10,7 @@ Status (eerste woord van de cel): `todo` · `doing` · `done` · `gate3` · `blo
 
 **Builds** (een build = één sessie, één branch, één PR; zie CLAUDE.md):
 Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
+Build B: TQ-03 + TQ-12 (klaar, #6).
 
 ## Fase 0 — bewijs op devkits
 
@@ -17,7 +18,7 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 | --- | --- | --- | --- | --- |
 | TQ-01 | CI bouwt een lege Matter-app voor esp32c6 groen met de vastgepinde toolchain. | WP0.1 | S | done (2026-11-18) |
 | TQ-02 | De CI-build draait geflasht op een C6-devkit; de log toont `TherIQ boiler unit started` en de koppelcodes. | WP0.1 | S | done (2026-11-18, run `docs/tests/runs/2026-11-18-TQ-02.md`) |
-| TQ-03 | Host-side unit tests (pure logica, zonder ESP-IDF) draaien in CI als eigen job; één voorbeeldtest faalt aantoonbaar als de logica breekt. | conventie | S | todo |
+| TQ-03 | Host-side unit tests (pure logica, zonder ESP-IDF) draaien in CI als eigen job; één voorbeeldtest faalt aantoonbaar als de logica breekt. | conventie | S | done (2026-11-23, #6; ADR-016) |
 | TQ-04 | Matter-endpoint Thermostat (Heat/Off, setpoint, kamertemperatuur) met nepsensor (langzame sinus), waarde gezet vóór `esp_matter::start`; build groen. | WP0.2 | M | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
 | TQ-05 | BOOT-knop 10 s ingedrukt wist fabrics en wifi; de RGB-led laat het aftellen zien. | WP0.2 | S | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
 | TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | done (2026-11-23, #5; runs `docs/tests/runs/2026-11-19-TQ-06-apple.md`, `2026-11-23-TQ-06.md`); R1 verschoven naar TQ-29 (ADR-015) |
@@ -26,7 +27,7 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 | TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | todo |
 | TQ-10 | `docs/ketels/nefit-topline-compact-hrc25-cw4.md` beschrijft lees-/schrijfwaarden, pollritme en antwoordtijden uit de log. | WP0.4 | S | todo |
 | TQ-11 | Ketel-API (`boiler_api`) als C++-interface met ADR: setpoint, CV aan/uit, status, modulatie, aanvoer/retour, druk, buiten, storing. | WP0.5 | S | todo |
-| TQ-12 | EMS-frame encode/decode en CRC met host tests (protocolkennis uit EMS-ESP, bronvermelding en NOTICE). | WP0.5 | M | todo |
+| TQ-12 | EMS-frame encode/decode en CRC met host tests (protocolkennis uit EMS-ESP, bronvermelding en NOTICE). | WP0.5 | M | done (2026-11-23, #6) |
 | TQ-13 | EMS-interface voor de C6 gekozen en besteld. | WP0.5 | S | done (2026-11-18, ADR-013) |
 | TQ-14 | EMS-driver (UART 9600, break-detectie) leest aanvoer, retour en modulatie van de eigen ketel. | WP0.5 | L | todo |
 | TQ-15 | Na akkoord schrijft de firmware een aanvoersetpoint en volgt de ketel dat aantoonbaar (log); terugweg beschreven. | WP0.5 | M | todo |
