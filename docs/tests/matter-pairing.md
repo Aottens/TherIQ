@@ -71,13 +71,14 @@ Meet van loslaten in de ene app tot de nieuwe waarde zichtbaar is in de andere. 
 - [ ] Modus Verwarmen in HA → Apple Home toont Verwarmen na ________ s; log `SystemMode -> Heat`
 
 ## R1: zonder internet
+- [ ] Mobiele data op de iPhone uit en iPhone op wifi (anders kan Apple Home via 4G/5G en iCloud lopen)
 - [ ] **WAN-kabel uit de router** (of het modem uit). Controle: op de Mac geeft `ping 1.1.1.1` geen antwoord.
       Tijdstip: ________
 - [ ] 1 minuut wachten (lopende cloudsessies laten verlopen)
 - [ ] Setpoint in Apple Home naar 20,5 °C → HA na ________ s
 - [ ] Setpoint in HA naar 21,0 °C → Apple Home na ________ s
 - [ ] Kamertemperatuur blijft verversen in beide apps (log elke 10 s)
-- [ ] **WAN-kabel terug**; internet werkt weer (`ping 1.1.1.1`), beide apps blijven het bord tonen
+- [ ] **WAN-kabel terug** en mobiele data weer aan; internet werkt weer (`ping 1.1.1.1`), beide apps blijven het bord tonen
 
 ## Open punten
 - 
