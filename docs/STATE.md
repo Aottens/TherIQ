@@ -24,13 +24,11 @@ Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productn
 Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), dan TQ-10 en TQ-14.
 
 ## Wacht op Aernout
-- Inkoop (`docs/FASE-0.md`, inkooplijst). Eerst het **BBQKees EMS Interface Board V3.1** (bbqkees-electronics.nl,
-  € 34,95): kritieke pad naar de mijlpaal van 31-12 (WP0.4 en WP0.5, ADR-013). Verder: SHT45-breakout, logic
-  analyzer, 2× ESP32-C6-DevKitC-1-N8, USB-C-datakabel.
-- PR #6 (Build B) reviewen en mergen.
+- Inkoop (`docs/FASE-0.md`, inkooplijst): SHT45-breakout, logic analyzer, 2× ESP32-C6-DevKitC-1-N8, USB-C-datakabel.
+  Het **BBQKees EMS Interface Board V3.1** is besteld (2026-11-23) en onderweg.
 
 ## Geblokkeerd
-- TQ-07, TQ-09 en alles daarna op de ketel: wacht op de inkoop.
+- TQ-09 en alles daarna op de ketel: wacht op levering van het BBQKees-bord. TQ-07: wacht op de SHT45-breakout.
 - Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen
