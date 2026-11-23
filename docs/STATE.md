@@ -24,7 +24,8 @@ Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productn
 Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), dan TQ-10 en TQ-14.
 
 ## Wacht op Aernout
-- Inkoop (`docs/FASE-0.md`, inkooplijst): SHT45-breakout, logic analyzer, 2× ESP32-C6-DevKitC-1-N8, USB-C-datakabel.
+- Inkoop (`docs/FASE-0.md`, inkooplijst): bij BerryBase 1× Waveshare ESP32-C6-DEV-KIT-N8, Adafruit SHT45 (5665),
+  USB-C-datakabel; bij TinyTronics de logic analyzer. De ketelsimulator wordt later de klassieke ESP32 uit de la.
   Het **BBQKees EMS Interface Board V3.1** is besteld (2026-11-23) en onderweg.
 
 ## Geblokkeerd
