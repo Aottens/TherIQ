@@ -20,7 +20,7 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 | TQ-03 | Host-side unit tests (pure logica, zonder ESP-IDF) draaien in CI als eigen job; één voorbeeldtest faalt aantoonbaar als de logica breekt. | conventie | S | todo |
 | TQ-04 | Matter-endpoint Thermostat (Heat/Off, setpoint, kamertemperatuur) met nepsensor (langzame sinus), waarde gezet vóór `esp_matter::start`; build groen. | WP0.2 | M | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
 | TQ-05 | BOOT-knop 10 s ingedrukt wist fabrics en wifi; de RGB-led laat het aftellen zien. | WP0.2 | S | done (2026-11-18, #1; run `docs/tests/runs/2026-11-18-TQ-04-05.md`) |
-| TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | gate3: `docs/tests/matter-pairing.md`, alleen sectie R1 (WAN-kabel uit); Apple Home, multi-admin en R3 gehaald (runs `docs/tests/runs/2026-11-19-TQ-06-apple.md`, `2026-11-23-TQ-06.md`) |
+| TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | done (2026-11-23, #5; runs `docs/tests/runs/2026-11-19-TQ-06-apple.md`, `2026-11-23-TQ-06.md`); R1 verschoven naar TQ-29 (ADR-015) |
 | TQ-07 | SHT45-driver (I²C, CRC-controle, middeling) levert temperatuur en RV aan het Matter-endpoint; CRC en filter hebben host tests. | WP0.3 | M | todo |
 | TQ-08 | Temperatuur in Apple Home en HA wijkt < 0,3 °C af van een referentiethermometer naast de sensor. | WP0.3 | S | todo |
 | TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | todo |
@@ -43,6 +43,6 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 | TQ-26 | Voeding en verbinding van het kamerunit-prototype beslist (ADR). | WP0.9 | S | todo |
 | TQ-27 | E-paper en draaiknop op de Waveshare C6-Zero tonen kamertemperatuur en setpoint; draaien wijzigt het setpoint. | WP0.9 | M | todo |
 | TQ-28 | Prototypebehuizing in Fusion (STEP en STL in de repo, PETG/ASA) geprint en passend om de elektronica. | WP0.9 | M | todo |
-| TQ-29 | Prototype hangt aan de wand; een setpoint via de knop staat binnen 2 s in Apple Home en HA. | WP0.9 | S | todo |
+| TQ-29 | Prototype hangt aan de wand; een setpoint via de knop staat binnen 2 s in Apple Home en HA; met de WAN-kabel uit blijft dat werken, ook tussen Apple Home en HA (R1, ADR-015; sectie R1 van `docs/tests/matter-pairing.md`). | WP0.9, R1 | S | todo |
 | TQ-30 | Home Assistant draait met de Matter-integratie (Matter Server) en IPv6 aan op de netwerkinterface, in hetzelfde netwerk als de ketelunit. | WP0.2, R3 | S | done (2026-11-23, HA OS op RPi 4; run `docs/tests/runs/2026-11-23-TQ-06.md`) |
 | TQ-31 | Basic Information toont TherIQ als vendor- en productnaam en een echte hardwareversie in plaats van `TEST_VENDOR`/`TEST_PRODUCT`/`TEST_VERSION`; zichtbaar in HA. | WP0.2 | S | todo |

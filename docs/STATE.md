@@ -10,7 +10,7 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
   verwarmen, Off/Heat) met een nepsensor (sinus 20 ± 1 °C, periode 10 min).
 - Het bord zit tegelijk in **Apple Home en Home Assistant** (multi-admin, 3 fabrics: twee van Apple, één van HA).
   **R3 gehaald**: setpoint en modus komen in beide richtingen vrijwel direct over. Geen firmwarewijziging nodig.
-- **R1 nog niet gemeten** (WAN-kabel uit): alleen die sectie van de TQ-06-run ontbreekt.
+- **R1 nog niet gemeten** (WAN-kabel uit): verschoven naar de run van TQ-29, met de kamerunit aan de wand (ADR-015).
 - HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
 - BOOT 10 s = Matter-fabrieksreset met led-aftelling (ADR-014 voor pinnen en ledvolgorde).
 
@@ -19,15 +19,14 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 2. TQ-31 (vendor- en productnaam in Basic Information) is klein; kan mee in een build die toch flasht.
 
 ## Wacht op Aernout
-- TQ-06, sectie R1 van `docs/tests/matter-pairing.md`: op een moment dat het huis 5 minuten zonder internet kan.
-  Mobiele data op de iPhone uit, WAN-kabel uit, setpoint beide kanten, alles terug. Bord niet resetten.
+- Geen open runs. R1 (WAN-kabel uit, mobiele data uit) komt in de checklist van TQ-29. Bord niet resetten.
 
 Inkoop (`docs/FASE-0.md`, inkooplijst):
 - 2× ESP32-C6-DevKitC-1-N8, SHT45-breakout, logic analyzer, USB-C-datakabel.
 - BBQKees EMS Interface Board V3.1 (bbqkees-electronics.nl, € 34,95) voor WP0.4 en WP0.5 (ADR-013).
 
 ## Geblokkeerd
-- Gate van fase 0: R1 wacht op Aernouts run.
+- Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen
 - WP0.9: hoe het kamerunit-prototype aan de wand voeding en verbinding krijgt (TQ-26).
