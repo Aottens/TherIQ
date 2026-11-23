@@ -41,7 +41,7 @@ Build B: TQ-03 + TQ-12 (klaar, #6).
 | TQ-23 | Weekschema op het apparaat (minimaal nachtverlaging); handmatige wijziging geldt tot het volgende schakelmoment; host tests. | WP0.8 | M | todo |
 | TQ-24 | Lus gesloten: Matter-setpoint en SHT45 sturen via de ketel-API de ketel aan/uit. | WP0.8 | M | todo |
 | TQ-25 | Na akkoord 48 u stoken op de eigen ketel zonder ingrijpen, met log; bediening vanuit Apple Home én HA. | WP0.8 | S | todo |
-| TQ-26 | Voeding en verbinding van het kamerunit-prototype beslist (ADR). | WP0.9 | S | done (2026-11-23, #PRNUM; ADR-017) |
+| TQ-26 | Voeding en verbinding van het kamerunit-prototype beslist (ADR). | WP0.9 | S | done (2026-11-23, #9; ADR-017) |
 | TQ-27 | E-paper en draaiknop op de Waveshare C6-Zero tonen kamertemperatuur en setpoint; draaien wijzigt het setpoint. | WP0.9 | M | todo |
 | TQ-28 | Prototypebehuizing in Fusion (STEP en STL in de repo, PETG/ASA) geprint en passend om de elektronica. | WP0.9 | M | todo |
 | TQ-29 | Prototype hangt aan de wand; een setpoint via de knop staat binnen 2 s in Apple Home en HA; met de WAN-kabel uit blijft dat werken, ook tussen Apple Home en HA (R1, ADR-015; sectie R1 van `docs/tests/matter-pairing.md`). | WP0.9, R1 | S | todo |
