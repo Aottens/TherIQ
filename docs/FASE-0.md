@@ -23,19 +23,22 @@ Gate fase 0: R1 en R3 gemeten, EMS lezen en schrijven op de eigen ketel, de voll
 
 ## Inkooplijst (indicatief)
 
-Controleer actuele beschikbaarheid en of de interfaces op 3,3 V werken met de ESP32-C6.
+Controleer actuele beschikbaarheid en of de interfaces op 3,3 V werken met de ESP32-C6. Liefst Europese winkels: bestellingen uit
+China en de VS gaven invoerkosten en vastgehouden pakketten (2026-11-23). BerryBase (DE) levert de bordjes, de SHT45 en de
+kabels; TinyTronics (NL) de logic analyzer.
 
 | Item | Aantal | Voor |
 | --- | --- | --- |
-| ESP32-C6-DevKitC-1-N8 (8 MB flash; niet DevKitM-1, die heeft 4 MB) | 2 | Ketelunit-prototype en ketelsimulator |
+| Waveshare ESP32-C6-DEV-KIT-N8 (module ESP32-C6-WROOM-1-N8, 8 MB flash; € 8,90, BerryBase WS-25723, gezien 2026-11-23). Gelijkwaardig aan de ESP32-C6-DevKitC-1-N8 (€ 15–17); niet de DevKitM-1 of bordjes met 4 MB | 1 | Ketelunit-prototype. 8 MB is nodig: de firmware is nu 1,83 MB en moet twee keer passen voor OTA |
+| Klassieke ESP32-WROOM uit de la (al in huis) | 1 | Eerst EMS-ESP voor WP0.4; komt vrij als het BBQKees-bord naar de C6 gaat (WP0.5) en wordt dan de ketelsimulator (WP0.6). De simulator heeft geen Matter en geen 8 MB nodig |
 | Waveshare ESP32-C6-Zero, esptool meldt ESP32-C6FH4 rev v0.2 met 8 MB flash (al in huis) | 1 | Direct inzetbaar voor WP0.1–0.3 (zelfde chip en flash als de ketelunit); daarna kamerunit-prototype (WP0.9) |
 | USB-C-kabel met data | 1–2 | Flashen en seriële log |
 | Master-OpenTherm-interface (DIYLESS Master Shield of Ihor Melnyk-adapter) | 1 | OT-master op het prototype |
 | Slave-OpenTherm-shield (DIYLESS) | 1 | Ketelsimulator |
 | BBQKees EMS Interface Board V3.1 (€ 34,95, bbqkees-electronics.nl, gezien 2026-11-18) | 1 | WP0.4 met een klassieke ESP32-WROOM uit de la en EMS-ESP; daarna WP0.5 aan de C6 (ADR-013) |
-| SHT45-breakout | 1 | WP0.3 |
+| SHT45-breakout (Adafruit 5665, I²C, STEMMA QT; € 14,90, BerryBase ADA5665, gezien 2026-11-23) | 1 | WP0.3; TQ-08 meet of hij binnen 0,3 °C blijft |
 | Nefit EMS-OT-converter (art. 7746901847) | 1, optioneel | WP0.7 |
-| Logic analyzer + multimeter | 1 | Timing en rusttoestand meten |
+| Logic analyzer 8 kanalen, 24 MHz (kloon, werkt met PulseView; € 9,75, TinyTronics LOGIC8) + multimeter | 1 | Timing en rusttoestand meten; nodig vanaf TQ-14 |
 
 ## Werkpakketten
 
