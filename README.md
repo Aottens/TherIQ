@@ -9,11 +9,12 @@ Status: fase 0, bewijs op devkits. Zie [`docs/SPEC.md`](docs/SPEC.md) en [`docs/
 | Map | Inhoud | Licentie |
 | --- | --- | --- |
 | `firmware/ketelunit` | ESP-IDF + esp-matter, ESP32-C6 | GPL-3.0-or-later |
+| `firmware/host_tests` | host tests van de pure logica (CMake + CTest, ADR-016) | GPL-3.0-or-later |
 | `firmware/kamerunit` | firmware kamerunit (volgt) | GPL-3.0-or-later |
 | `firmware/ketelsim` | OpenTherm-ketelsimulator (geparkeerd, ADR-019) | GPL-3.0-or-later |
-| `tools` | ketelbus-logger, kalibratie (volgt) | GPL-3.0-or-later |
+| `tools` | `ems_syslog_capture.py`: EMS-buslog via syslog (ADR-017); kalibratie (volgt) | GPL-3.0-or-later |
 | `hardware/ketelunit`, `hardware/kamerunit` | KiCad-projecten (volgt) | CERN-OHL-S-2.0 |
-| `enclosure` | parametrisch CAD-model + STEP/STL (volgt) | CERN-OHL-S-2.0 |
+| `enclosure` | prototypebehuizing in Fusion met STEP/STL ernaast (ADR-012, volgt) | CERN-OHL-S-2.0 |
 | `docs` | spec, beslissingen, testverslagen | CC BY-SA 4.0 |
 
 De volledige licentieteksten staan in [`LICENSES/`](LICENSES). Bronbestanden dragen een `SPDX-License-Identifier`-regel.
@@ -30,12 +31,22 @@ docker run --rm -v "$PWD":/project -w /project/firmware/ketelunit \
 
 Zonder lokale toolchain: elke push bouwt in GitHub Actions; het image `theriq-ketelunit.bin` staat als artifact bij de run.
 
+## Host tests
+
+De pure logica (regelaar, frame-encoding en -decoding) wordt zonder ESP-IDF getest; alleen `cmake` en een C++-compiler zijn
+nodig. CI draait dezelfde tests als job `host-tests`. Vanuit de repo-root:
+
+```bash
+cmake -S firmware/host_tests -B build/host && cmake --build build/host && ctest --test-dir build/host --output-on-failure
+```
+
 ## Flashen
 
 Het artifact is één samengevoegd image vanaf adres `0x0`.
 
 - **Zonder installatie**: [ESP Web Flasher](https://espressif.github.io/esptool-js/) in Chrome, devkit via USB, bestand op offset `0x0`.
-- **Met esptool**: `pipx run esptool --chip esp32c6 write-flash 0x0 theriq-ketelunit.bin`
+- **Met esptool**: `uvx --from esptool==5.1.0 esptool --chip esp32c6 write-flash 0x0 theriq-ketelunit.bin`. Zonder
+  `erase-flash` blijven de Matter-koppelingen (fabrics) bewaard.
 
 Seriële log bekijken: `screen /dev/cu.usbmodem* 115200` (afsluiten met Ctrl-A, K) of de console van de Web Flasher.
 
