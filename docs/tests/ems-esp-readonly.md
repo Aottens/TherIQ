@@ -25,8 +25,9 @@ Twee instellingen in EMS-ESP klinken hetzelfde maar zijn het niet (gecontroleerd
 | **Enable read-only mode** (Tx aan) | Poll-antwoorden en **leesvragen** (versie, waarden) van EMS-ESP zelf | Schrijfopdrachten (`TX_WRITE`): EMS-ESP logt `[readonly] Sending write Tx telegram: ...` en stuurt niets. **Let op:** ruwe `send`-telegrammen (console `send`, *Send telegram* in de web-UI) gaan in v3.9.1 wél door; dat is pas in v3.10.0 dicht. Gebruik ze niet |
 
 - **Fase 1, Tx Off, ≥ 24 u:** dit is de log voor TQ-09. Je hoort hoe de Nefit-thermostaat en de ketel met elkaar
-  praten, zonder dat EMS-ESP iets toevoegt. Nadeel: EMS-ESP herkent zonder Tx geen apparaten (herkennen gaat via een
-  versievraag), dus de lijst *Devices* blijft leeg. De ketel en de thermostaat herken je in de log aan hun adres.
+  praten, zonder dat EMS-ESP iets toevoegt. EMS-ESP herkent de apparaten toch: de thermostaat vraagt zelf versie en
+  parameters van de ketel op, en EMS-ESP luistert die antwoorden mee (gezien in de test van 2026-11-25). Dat EMS-ESP
+  zelf niets vroeg, laat `show ems` zien: `#read requests sent: 0` en `#write requests sent: 0`.
 - **Fase 2, read-only met Tx aan, ≥ 1 u:** EMS-ESP stelt leesvragen, herkent ketel en thermostaat met naam en
   versie en toont hun waarden. Dat is de opstap naar TQ-10. Schrijven blijft geblokkeerd.
 
@@ -120,6 +121,10 @@ uvx --from esptool==5.1.0 esptool --chip esp32 --port <poort> --baud 460800 --be
       Port `5514`; Log Level `INFO`; Mark Interval `60`. INFO is nodig om ook een geblokkeerde schrijfpoging
       (`[readonly] ...`) in de log te zien; de telegrammen zelf komen op NOTICE
 - [ ] Telnet staat aan (*Services*, standaard aan in v3.9.1). Opslaan; herstart EMS-ESP als de UI daarom vraagt
+- [ ] *Scheduler* → nieuwe regel: type **Timer**, tijd **00:00** (= één keer bij het opstarten), command
+      `system/watch`, value `raw`, actief. Zonder deze regel staat `watch` na elke herstart uit en stopt de log
+      ongemerkt. Controle: EMS-ESP herstarten; in de syslog verschijnt `Called command system/watch … with value raw`
+      (in read-only mode met `[readonly] ` ervoor: dat is een gewoon commando, geen buswrite)
 - [ ] Controle: `nc ems-esp.local 23` (macOS heeft geen `telnet` meer), dan `show ems`: `Tx mode: 0`. Ctrl-C
 - [ ] ESP32 van de Mac af. Vanaf nu voeding via de **USB-netadapter**, niet via de Mac: het interfacebord is niet
       galvanisch gescheiden (ADR-013), dus geen verbinding tussen de ketelbus en de Mac
@@ -154,13 +159,14 @@ caffeinate -i python3 tools/ems_syslog_capture.py docs/ketels/logs/<datum>-txoff
 ```
 
 - [ ] Vraagt de macOS-firewall om inkomende verbindingen voor `python3` toe te staan: toestaan
-- [ ] Tweede tab: `nc ems-esp.local 23`, dan `watch raw`. Antwoord: `Watching incoming telegrams, displayed as raw bytes`.
-      Ctrl-C: `watch` blijft aan (het is een instelling van EMS-ESP, niet van de telnetsessie), maar verdwijnt bij een
-      herstart van EMS-ESP. Na elke herstart dus opnieuw `watch raw`
+- [ ] `watch raw` staat aan via de Scheduler-regel. Handmatig kan ook: `nc ems-esp.local 23`, dan `watch raw`
+      (antwoord `Watching incoming telegrams, displayed as raw bytes`), Ctrl-C. `watch` is een instelling van EMS-ESP,
+      niet van de telnetsessie, en verdwijnt alleen bij een herstart
 - [ ] `tail -f docs/ketels/logs/<datum>-txoff.log`: regels als
-      `2026-11-27T10:00:01.234<TAB><13>1 - ems-esp emsesp - - - 000+00:12:34.567 N 41: Rx: 08 00 18 00 …`.
-      Velden: tijd van de Mac, syslog-kop, uptime van EMS-ESP (dagen+uu:mm:ss.mmm), niveau (`N` = NOTICE), het
-      volgnummer van de logregel, en de ruwe bytes inclusief CRC. Polls (één byte) staan er niet in
+      `2026-11-25T20:31:08.937<TAB><117>1 2026-11-25T20:32:11.000000+01:00 ems-esp telegram - - - 000+00:02:27.342 N 21: Rx: 08 00 34 00 …`.
+      Velden: tijd van de Mac, syslog-kop met de tijd van EMS-ESP (overgenomen uit het tijdtelegram `06` van de
+      thermostaat; die klok liep op 2026-11-25 ruim een minuut vóór), uptime van EMS-ESP (dagen+uu:mm:ss.mmm),
+      niveau (`N` = NOTICE), volgnummer van de logregel, en de ruwe bytes inclusief CRC. Polls (één byte) staan er niet in
 - [ ] **Bus gezien**: `grep -c 'Rx:' <log>` > 0 na een minuut: ________
 - [ ] **Ketel gezien** (afzender `08`): `grep -c 'Rx: 08 ' <log>` > 0: ________
 - [ ] **Thermostaat gezien**: `grep -cE 'Rx: (10|17|18) ' <log>`: ________; adres van de thermostaat: ________
@@ -168,8 +174,9 @@ caffeinate -i python3 tools/ems_syslog_capture.py docs/ketels/logs/<datum>-txoff
 - [ ] Na 1 uur: thermostaat en ketel gedragen zich normaal, kamer op setpoint
 - [ ] Na ≥ 24 u: capture stoppen met Ctrl-C. Eerste en laatste regel (`head -1`, `tail -1`) liggen ≥ 24 u uit elkaar
       en de laatste regel is een `Rx:`-regel (anders is EMS-ESP onderweg herstart en stond `watch` uit). Van ________ tot ________
-- [ ] **Geen enkel telegram van EMS-ESP**: `grep -c 'Rx: 49 ' <log>` = 0 (met Tx Off zendt EMS-ESP niets)
-- [ ] **Geen geblokkeerde schrijfpoging**: `grep -c '\[readonly\]' <log>` = 0
+- [ ] **Geen enkel telegram van EMS-ESP**: `grep -c 'Rx: 49 ' <log>` = 0 (met Tx Off zendt EMS-ESP niets), en
+      `show ems` vóór het stoppen: `#read requests sent: 0`, `#write requests sent: 0`
+- [ ] **Geen geblokkeerde schrijfpoging**: `grep -c '\[readonly\] Sending' <log>` = 0
 - [ ] Verloren regels (UDP is best-effort; het volgnummer na het niveau loopt per logregel op, een sprong is verlies):
 
 ```bash
@@ -194,7 +201,7 @@ awk 'match($0, / [A-Z] [0-9]+: /) { n = substr($0, RSTART+3, RLENGTH-5) + 0; if 
 - [ ] Na ≥ 1 u capture gestopt. **EMS-ESP stelde leesvragen**: `grep -cE 'Rx: 49 [89A-F][0-9A-F] ' <log>` > 0: ________
 - [ ] **Geen schrijfopdracht van EMS-ESP**: `grep -cE 'Rx: 49 [0-7][0-9A-F] ' <log>` = 0. Eigen telegrammen komen als
       echo in de log (`EMSESP::incoming_telegram`), dus een write van `49` zou hier zichtbaar zijn
-- [ ] `grep -c '\[readonly\]' <log>` = 0 (> 0 betekent: iets probeerde te schrijven en is tegengehouden; noteer de
+- [ ] `grep -c '\[readonly\] Sending' <log>` = 0 (> 0 betekent: iets probeerde te schrijven en is tegengehouden; noteer de
       regels onder *Open punten*)
 - [ ] Thermostaat en ketel nog normaal
 

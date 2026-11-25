@@ -16,17 +16,17 @@ Versie van EMS-ESP, bordprofiel en de afvinkpunten staan in het runbestand `docs
 Eén regel per syslog-bericht van EMS-ESP, geschreven door `tools/ems_syslog_capture.py` (ADR-017):
 
 ```
-2026-11-27T10:00:01.234<TAB><13>1 - ems-esp emsesp - - - 000+00:12:34.567 N 41: Rx: 08 00 18 00 …
+2026-11-25T20:31:08.937<TAB><117>1 2026-11-25T20:32:11.000000+01:00 ems-esp telegram - - - 000+00:02:27.342 N 21: Rx: 08 00 34 00 …
 ```
 
 | Veld | Betekenis |
 | --- | --- |
-| `2026-11-27T10:00:01.234` | Lokale tijd van de Mac bij ontvangst (ms). EMS-ESP heeft zonder NTP geen klok |
-| `<13>1 - ems-esp emsesp - - -` | Syslog-kop (RFC 5424); `-` = geen tijd van EMS-ESP |
-| `000+00:12:34.567` | Uptime van EMS-ESP (dagen+uu:mm:ss.mmm): de nauwkeurige tijdbasis voor pollritme en antwoordtijden |
+| `2026-11-25T20:31:08.937` | Lokale tijd van de Mac bij ontvangst (ms) |
+| `<117>1 2026-11-25T20:32:11.000000+01:00 ems-esp telegram - - -` | Syslog-kop (RFC 5424) met de tijd van EMS-ESP. Zonder NTP neemt EMS-ESP de klok over van de thermostaat (telegram `06`); die liep op 2026-11-25 ruim een minuut vóór. `telegram` is de bron binnen EMS-ESP (andere: `shell`, `telnet`, `emsesp`) |
+| `000+00:02:27.342` | Uptime van EMS-ESP (dagen+uu:mm:ss.mmm): de nauwkeurige tijdbasis voor pollritme en antwoordtijden |
 | `N` | Niveau: `N` = NOTICE (telegrammen), `I` = INFO, `W` = WARNING |
-| `41` | Volgnummer van de logregel; een sprong betekent een verloren UDP-pakket |
-| `Rx: 08 00 18 00 …` | Ruw telegram in hex, inclusief CRC: afzender, ontvanger (≥ `80` = leesvraag), type, offset, data, CRC |
+| `21` | Volgnummer van de logregel; een sprong betekent een verloren UDP-pakket |
+| `Rx: 08 00 34 00 …` | Ruw telegram in hex, inclusief CRC: afzender, ontvanger (≥ `80` = leesvraag), type, offset, data, CRC |
 
 Niet in de log: de één-byte-polls van de ketel en de één-byte-bevestigingen van schrijfopdrachten (EMS-ESP logt
 alleen telegrammen van vijf bytes of meer). Telegrammen die EMS-ESP zelf verstuurt, komen als echo wél in de log.
