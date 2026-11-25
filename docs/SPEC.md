@@ -13,7 +13,7 @@ Ontwerpprincipe: de fabrikant is de gebruiker. Alles wat de thermostaat kan, sta
 | R1 | Volledig functioneel zonder internet of cloud | Router WAN-kabel eruit: regeling, Apple Home en HA blijven werken |
 | R2 | Geen functie afhankelijk van een betaald account | Code-review: geen externe endpoints in de regelketen |
 | R3 | Gelijktijdig lokaal bedienbaar vanuit Apple Home en Home Assistant | Setpoint wijzigen in de ene app is binnen 2 s zichtbaar in de andere |
-| R4 | Modulerende aansturing via OpenTherm én EMS (Bosch-familie: Nefit, Buderus, Junkers, Worcester); aan/uit-relais als fallback voor de rest. OpenTherm is geparkeerd tot nader order (ADR-017) | Test op een EMS-ketel, een OpenTherm-ketel (of simulator, zie 4) en een aan/uit-ketel |
+| R4 | Modulerende aansturing via OpenTherm én EMS (Bosch-familie: Nefit, Buderus, Junkers, Worcester); aan/uit-relais als fallback voor de rest. OpenTherm is geparkeerd tot nader order (ADR-019) | Test op een EMS-ketel, een OpenTherm-ketel (of simulator, zie 4) en een aan/uit-ketel |
 | R5 | Blijft regelen als wifi, HA of de Apple-woninghub wegvalt | Netwerk uit: kamertemperatuur blijft binnen ±0,5 °C van het setpoint |
 | R6 | Hergebruikt de bestaande 2-draads thermostaatkabel; geen nieuwe kabels door het huis | Installatie zonder hak- en breekwerk |
 | R7 | Geen netspanning (230 V) op de eigen printplaten | Schema-review |
@@ -81,7 +81,7 @@ Thread: de gekozen chip kan het (zie 5), maar v1 blijft op wifi omdat de ketelun
 
 ## 4. Ketelinterfaces: OpenTherm en EMS
 
-> OpenTherm is geparkeerd tot nader order (ADR-017). Fase 0 en rev A doen alleen EMS. De OpenTherm-delen hieronder blijven staan voor als het terugkomt.
+> OpenTherm is geparkeerd tot nader order (ADR-019). Fase 0 en rev A doen alleen EMS. De OpenTherm-delen hieronder blijven staan voor als het terugkomt.
 
 De ketelunit spreekt twee ketelbussen: OpenTherm (Remeha, Intergas en vele anderen) en EMS (de Bosch-familie, waaronder Nefit). De regeling praat met een abstracte ketel-API (setpoint, modulatie, temperaturen, storing); OpenTherm en EMS zijn drivers daaronder. Bij OpenTherm is de ketelunit master: hij stuurt elke seconde een bericht en de ketel antwoordt. De interface wordt galvanisch gescheiden van de microcontroller en moet bij een vastgelopen of stroomloze MCU in de rusttoestand blijven.
 
@@ -313,12 +313,12 @@ SECURITY.md              meldpunt kwetsbaarheden
 
 ## 10. Fasering en open beslissingen
 
-Fase 0 gaat eerst, op devkits met een kant-en-klare EMS-interface, direct op de eigen Nefit-ketel. OpenTherm is geparkeerd (ADR-017). Fase 0 bewijst ook Matter, want als dat niet tegelijk goed werkt in Apple Home én HA, verandert de architectuur, en dan wil je nog geen eigen print hebben laten maken.
+Fase 0 gaat eerst, op devkits met een kant-en-klare EMS-interface, direct op de eigen Nefit-ketel. OpenTherm is geparkeerd (ADR-019). Fase 0 bewijst ook Matter, want als dat niet tegelijk goed werkt in Apple Home én HA, verandert de architectuur, en dan wil je nog geen eigen print hebben laten maken.
 
 | Fase | Inhoud | Gate |
 | --- | --- | --- |
 | 0 · Bewijs op devkit | ESP32-C6-devkit, EMS-interface, Matter in Apple Home en HA tegelijk, eigen EMS-ketel | R1 + R3 aangetoond |
-| 1 · Ketelunit rev A | Eigen PCB, EMS-interface (OT geparkeerd, ADR-017), relais, regeling + fail-safe; kamersensor nog los | 2 weken stabiel stoken |
+| 1 · Ketelunit rev A | Eigen PCB, EMS-interface (OT geparkeerd, ADR-019), relais, regeling + fail-safe; kamersensor nog los | 2 weken stabiel stoken |
 | 2 · Kamerunit rev A | Kamerbus (D2), e-paper, draaiknop, behuizing, wandplaat, sensorkalibratie | R5, R6, R9 gemeten |
 | 3 · Publicatie | Docs + CI-releases, ketellijst, externe bouwers | R8: bouw zonder hulp |
 
@@ -338,12 +338,12 @@ Elke fase sluit af met een gate die aan de eisen uit 1 hangt; de volgende fase s
 
 | ID | Vraag | Opties | Voorstel |
 | --- | --- | --- | --- |
-| D0 | Welke ketelbus spreekt de eigen ketel? | Beantwoord: Nefit TopLine Compact HRC 25/CW4 spreekt EMS, geen native OpenTherm | EMS direct testen op de eigen ketel; OpenTherm geparkeerd (ADR-017) |
+| D0 | Welke ketelbus spreekt de eigen ketel? | Beantwoord: Nefit TopLine Compact HRC 25/CW4 spreekt EMS, geen native OpenTherm | EMS direct testen op de eigen ketel; OpenTherm geparkeerd (ADR-019) |
 | D1 | Integratieprotocol | Matter / HomeSpan + MQTT | Matter (zie 3) |
 | D2 | Fysieke laag kamerbus | Eigen laag naar OpenTherm-principe / bestaande 2-draads standaard / draadloze kamerunit op batterij | Uitzoeken in fase 1; eis: ≥ 150 mW naar de kamerunit, polariteitsongevoelig, 50 m |
 | D3 | MCU kamerunit | Zuinige MCU zonder radio / ESP32-C6 met radio uit | Volgt uit D2 en het vermogensbudget |
 | D4 | RTC met supercap op ketelunit | Ja / nee | Ja, schema blijft dan correct na stroomuitval zonder netwerk |
-| D5 | Gedrag van de ketel bij communicatieverlies | Per ketel en per bus verschillend | Testen op eigen ketel (EMS); OT geparkeerd (ADR-017); vastleggen in de ketellijst |
+| D5 | Gedrag van de ketel bij communicatieverlies | Per ketel en per bus verschillend | Testen op eigen ketel (EMS); OT geparkeerd (ADR-019); vastleggen in de ketellijst |
 | D6 | Projectnaam | Beantwoord: **TherIQ** (ADR-007) | — |
 | D7 | Matter-certificering | Ja (kosten, lidmaatschap) / nee ("Uncertified" in Apple Home) | Nee voor v1; heroverwegen bij verkoop van kits |
 | D8 | EMS-hardware in fase 0 | Kant-en-klare EMS-ESP-gateway / zelfbouw naar de open referentieschakeling | Beantwoord (ADR-013): BBQKees-interfacebord met EMS-ESP op een eigen ESP32 om de ketel te leren kennen; daarna hetzelfde bord aan de C6 |

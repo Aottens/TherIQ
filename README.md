@@ -10,7 +10,7 @@ Status: fase 0, bewijs op devkits. Zie [`docs/SPEC.md`](docs/SPEC.md) en [`docs/
 | --- | --- | --- |
 | `firmware/ketelunit` | ESP-IDF + esp-matter, ESP32-C6 | GPL-3.0-or-later |
 | `firmware/kamerunit` | firmware kamerunit (volgt) | GPL-3.0-or-later |
-| `firmware/ketelsim` | OpenTherm-ketelsimulator (geparkeerd, ADR-017) | GPL-3.0-or-later |
+| `firmware/ketelsim` | OpenTherm-ketelsimulator (geparkeerd, ADR-019) | GPL-3.0-or-later |
 | `tools` | ketelbus-logger, kalibratie (volgt) | GPL-3.0-or-later |
 | `hardware/ketelunit`, `hardware/kamerunit` | KiCad-projecten (volgt) | CERN-OHL-S-2.0 |
 | `enclosure` | parametrisch CAD-model + STEP/STL (volgt) | CERN-OHL-S-2.0 |
