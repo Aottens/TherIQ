@@ -34,8 +34,9 @@ Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productn
 - Run TQ-09 (`docs/tests/ems-esp-readonly.md`): proef op 2026-11-25 geslaagd (`docs/tests/runs/2026-11-25-TQ-09-test.md`).
   De 24 u-log (fase 1, Tx Off) loopt van za 2026-11-28 06:00 tot zo 06:00. Vooraf: herstarttest van de
   Scheduler-regel `watchstartup` en het IP van de Mac (192.168.50.75) vastzetten.
-- Inkoop (`docs/FASE-0.md`, inkooplijst): bij BerryBase 1× Waveshare ESP32-C6-DEV-KIT-N8, Adafruit SHT45 (5665),
-  USB-C-datakabel; bij TinyTronics de logic analyzer. Geen OpenTherm-shields of EMS-OT-converter meer.
+- Inkoop (`docs/FASE-0.md`, inkooplijst): bij HobbyElectronica de ESP32-C6 DevKit C 16 MB (HE1251), de rotary
+  encoder, de 12 V-voeding en de step-down; bij BerryBase de SHT45 en het 2,9"-e-paper (WS-19408); bij TinyTronics de
+  logic analyzer. E-paper en encoder eerst: zonder die twee kan TQ-27 niet beginnen.
 
 ## Geblokkeerd
 - TQ-10 en TQ-14: wachten op de buslog van TQ-09. TQ-07: wacht op de SHT45-breakout.
