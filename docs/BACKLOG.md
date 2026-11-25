@@ -32,12 +32,6 @@ Build C: TQ-09 (checklist en logroute; gate 3: Aernouts run aan de ketel).
 | TQ-13 | EMS-interface voor de C6 gekozen en besteld. | WP0.5 | S | done (2026-11-18, ADR-013) |
 | TQ-14 | EMS-driver (UART 9600, break-detectie) leest aanvoer, retour en modulatie van de eigen ketel. | WP0.5 | L | todo |
 | TQ-15 | Na akkoord schrijft de firmware een aanvoersetpoint en volgt de ketel dat aantoonbaar (log); terugweg beschreven. | WP0.5 | M | todo |
-| TQ-16 | OpenTherm-frame encode/decode en pariteit met host tests. | WP0.6 | S | todo |
-| TQ-17 | `firmware/ketelsim` gedraagt zich als OT-ketel met instelbaar gedrag (ID's, storing, traag, geen antwoord). | WP0.6 | L | todo |
-| TQ-18 | OT-master via RMT achter de ketel-API wisselt alle ID's uit SPEC §4 uit met de simulator. | WP0.6 | L | todo |
-| TQ-19 | "Unknown data-ID" wordt onthouden; een testscript draait alle simulatorscenario's automatisch. | WP0.6 | M | todo |
-| TQ-20 | Met de MCU in reset staat de OT-lijn gemeten in de rusttoestand. | WP0.6 | S | todo |
-| TQ-21 | (optioneel) Minimale OT-berichtenset werkt via de EMS-OT-converter; verschillen staan in de ketellijst. | WP0.7 | L | todo |
 | TQ-22 | Aan/uit-regelaar met hysterese als pure logica met host tests. | WP0.8 | S | todo |
 | TQ-23 | Weekschema op het apparaat (minimaal nachtverlaging); handmatige wijziging geldt tot het volgende schakelmoment; host tests. | WP0.8 | M | todo |
 | TQ-24 | Lus gesloten: Matter-setpoint en SHT45 sturen via de ketel-API de ketel aan/uit. | WP0.8 | M | todo |
@@ -48,3 +42,16 @@ Build C: TQ-09 (checklist en logroute; gate 3: Aernouts run aan de ketel).
 | TQ-29 | Prototype hangt aan de wand; een setpoint via de knop staat binnen 2 s in Apple Home en HA; met de WAN-kabel uit blijft dat werken, ook tussen Apple Home en HA (R1, ADR-015; sectie R1 van `docs/tests/matter-pairing.md`). | WP0.9, R1 | S | todo |
 | TQ-30 | Home Assistant draait met de Matter-integratie (Matter Server) en IPv6 aan op de netwerkinterface, in hetzelfde netwerk als de ketelunit. | WP0.2, R3 | S | done (2026-11-23, HA OS op RPi 4; run `docs/tests/runs/2026-11-23-TQ-06.md`) |
 | TQ-31 | Basic Information toont TherIQ als vendor- en productnaam en een echte hardwareversie in plaats van `TEST_VENDOR`/`TEST_PRODUCT`/`TEST_VERSION`; zichtbaar in HA. | WP0.2 | S | todo |
+
+## Geparkeerd: OpenTherm (ADR-019)
+
+Tot nader order niet plannen. Komt OpenTherm terug, dan gaan deze rijen terug naar fase 0 of 1.
+
+| Id | Taak (één zin, controleerbaar) | WP / eis | Grootte | Status |
+| --- | --- | --- | --- | --- |
+| TQ-16 | OpenTherm-frame encode/decode en pariteit met host tests. | WP0.6 | S | blocked: geparkeerd (ADR-019) |
+| TQ-17 | `firmware/ketelsim` gedraagt zich als OT-ketel met instelbaar gedrag (ID's, storing, traag, geen antwoord). | WP0.6 | L | blocked: geparkeerd (ADR-019) |
+| TQ-18 | OT-master via RMT achter de ketel-API wisselt alle ID's uit SPEC §4 uit met de simulator. | WP0.6 | L | blocked: geparkeerd (ADR-019) |
+| TQ-19 | "Unknown data-ID" wordt onthouden; een testscript draait alle simulatorscenario's automatisch. | WP0.6 | M | blocked: geparkeerd (ADR-019) |
+| TQ-20 | Met de MCU in reset staat de OT-lijn gemeten in de rusttoestand. | WP0.6 | S | blocked: geparkeerd (ADR-019) |
+| TQ-21 | (optioneel) Minimale OT-berichtenset werkt via de EMS-OT-converter; verschillen staan in de ketellijst. | WP0.7 | L | blocked: geparkeerd (ADR-019) |

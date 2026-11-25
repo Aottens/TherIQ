@@ -13,6 +13,8 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 - De EMS-framelaag staat er: component `ems_frame` (CRC, decode, encode; EMS 1.0 en EMS+), getest met echte
   telegrammen uit EMS-ESP v3.9.1. De firmware gebruikt hem nog niet; dat doet de EMS-driver (TQ-14).
 - HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
+- OpenTherm is geparkeerd tot nader order (ADR-019): eerst werkt TherIQ voor dit huis, via EMS. TQ-16 t/m TQ-21
+  staan onder *Geparkeerd* in de backlog; de gate van fase 0 vraagt geen OpenTherm meer.
 - Het BBQKees EMS Interface Board V3.1 is binnen (2026-11-25). De checklist voor TQ-09 staat klaar:
   `docs/tests/ems-esp-readonly.md` (EMS-ESP v3.9.1 op de klassieke ESP32, eerst ≥ 24 u met Tx Off, dan read-only;
   log via syslog naar de Mac met `tools/ems_syslog_capture.py`, ADR-017).
@@ -23,16 +25,17 @@ Aan de ketel: Aernouts run van TQ-09 (zie *Wacht op Aernout*). Met die log: TQ-1
 
 Werk zonder hardware, elk als eigen build of samen voorgesteld op de `Builds:`-regel:
 1. TQ-11: ketel-API (`boiler_api`) als C++-interface met ADR. Daarna weet TQ-14 waar hij heen schrijft.
-2. TQ-16: OpenTherm-frame encode/decode en pariteit met host tests (zelfde patroon als `ems_frame`).
-3. TQ-22: aan/uit-regelaar met hysterese als pure logica met host tests.
+2. TQ-22: aan/uit-regelaar met hysterese als pure logica met host tests.
+3. TQ-23: weekschema (nachtverlaging) als pure logica met host tests.
 
 Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productnaam) als één build die toch flasht.
 
 ## Wacht op Aernout
-- Run TQ-09: `docs/tests/ems-esp-readonly.md` doorlopen; logs en runbestand in een PR. Eerst kijken of de ketel een
-  service-jack heeft en of de BBQKees-jackkabel in huis is (50 cm was op 2026-11-25 uitverkocht).
+- Run TQ-09 (`docs/tests/ems-esp-readonly.md`): proef op 2026-11-25 geslaagd (`docs/tests/runs/2026-11-25-TQ-09-test.md`).
+  De 24 u-log (fase 1, Tx Off) loopt van za 2026-11-28 06:00 tot zo 06:00. Vooraf: herstarttest van de
+  Scheduler-regel `watchstartup` en het IP van de Mac (192.168.50.75) vastzetten.
 - Inkoop (`docs/FASE-0.md`, inkooplijst): bij BerryBase 1× Waveshare ESP32-C6-DEV-KIT-N8, Adafruit SHT45 (5665),
-  USB-C-datakabel; bij TinyTronics de logic analyzer. De ketelsimulator wordt later de klassieke ESP32 uit de la.
+  USB-C-datakabel; bij TinyTronics de logic analyzer. Geen OpenTherm-shields of EMS-OT-converter meer.
 
 ## Geblokkeerd
 - TQ-10 en TQ-14: wachten op de buslog van TQ-09. TQ-07: wacht op de SHT45-breakout.
