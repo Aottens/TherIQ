@@ -11,6 +11,7 @@ Status (eerste woord van de cel): `todo` · `doing` · `done` · `gate3` · `blo
 **Builds** (een build = één sessie, één branch, één PR; zie CLAUDE.md):
 Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 Build B: TQ-03 + TQ-12 (klaar, #6).
+Build C: TQ-09 (checklist en logroute; gate 3: Aernouts run aan de ketel).
 
 ## Fase 0 — bewijs op devkits
 
@@ -24,7 +25,7 @@ Build B: TQ-03 + TQ-12 (klaar, #6).
 | TQ-06 | Koppelen in Apple Home, daarna multi-admin in HA; setpoint wijzigen staat binnen 2 s in de andere app (R3); met WAN-kabel uit blijft alles werken (R1). | WP0.2, R1, R3 | S | done (2026-11-23, #5; runs `docs/tests/runs/2026-11-19-TQ-06-apple.md`, `2026-11-23-TQ-06.md`); R1 verschoven naar TQ-29 (ADR-015) |
 | TQ-07 | SHT45-driver (I²C, CRC-controle, middeling) levert temperatuur en RV aan het Matter-endpoint; CRC en filter hebben host tests. | WP0.3 | M | todo |
 | TQ-08 | Temperatuur in Apple Home en HA wijkt < 0,3 °C af van een referentiethermometer naast de sensor. | WP0.3 | S | todo |
-| TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | todo |
+| TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | gate3: `docs/tests/ems-esp-readonly.md` (ADR-017) |
 | TQ-10 | `docs/ketels/nefit-topline-compact-hrc25-cw4.md` beschrijft lees-/schrijfwaarden, pollritme en antwoordtijden uit de log. | WP0.4 | S | todo |
 | TQ-11 | Ketel-API (`boiler_api`) als C++-interface met ADR: setpoint, CV aan/uit, status, modulatie, aanvoer/retour, druk, buiten, storing. | WP0.5 | S | todo |
 | TQ-12 | EMS-frame encode/decode en CRC met host tests (protocolkennis uit EMS-ESP, bronvermelding en NOTICE). | WP0.5 | M | done (2026-11-23, #6) |
