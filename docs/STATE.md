@@ -13,22 +13,25 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 - De EMS-framelaag staat er: component `ems_frame` (CRC, decode, encode; EMS 1.0 en EMS+), getest met echte
   telegrammen uit EMS-ESP v3.9.1. De firmware gebruikt hem nog niet; dat doet de EMS-driver (TQ-14).
 - HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
+- OpenTherm is geparkeerd tot nader order (ADR-017): eerst werkt TherIQ voor dit huis, via EMS. TQ-16 t/m TQ-21
+  staan onder *Geparkeerd* in de backlog; de gate van fase 0 vraagt geen OpenTherm meer.
 
 ## Volgende
 Werk zonder hardware, elk als eigen build of samen voorgesteld op de `Builds:`-regel:
 1. TQ-11: ketel-API (`boiler_api`) als C++-interface met ADR. Daarna weet TQ-14 waar hij heen schrijft.
-2. TQ-16: OpenTherm-frame encode/decode en pariteit met host tests (zelfde patroon als `ems_frame`).
-3. TQ-22: aan/uit-regelaar met hysterese als pure logica met host tests.
+2. TQ-22: aan/uit-regelaar met hysterese als pure logica met host tests.
+3. TQ-23: weekschema (nachtverlaging) als pure logica met host tests.
 
 Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productnaam) als één build die toch flasht.
-Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), dan TQ-10 en TQ-14.
+Zaterdag 2026-11-28: TQ-09 met het BBQKees-bord (alleen lezend aan de ketel, 24 u buslog), dan TQ-10 en TQ-14.
 
 ## Wacht op Aernout
-- Inkoop (`docs/FASE-0.md`, inkooplijst): SHT45-breakout, logic analyzer, 2× ESP32-C6-DevKitC-1-N8, USB-C-datakabel.
-  Het **BBQKees EMS Interface Board V3.1** is besteld (2026-11-23) en onderweg.
+- Inkoop (`docs/FASE-0.md`, inkooplijst): SHT45-breakout, logic analyzer, 1 + 1 reserve ESP32-C6-DevKitC-1
+  (N8 of N16; een N16-kloon kost ~€ 10), USB-C-datakabel. Geen OpenTherm-shields of EMS-OT-converter meer.
+- TQ-09 zaterdag 2026-11-28 met het **BBQKees EMS Interface Board V3.1**.
 
 ## Geblokkeerd
-- TQ-09 en alles daarna op de ketel: wacht op levering van het BBQKees-bord. TQ-07: wacht op de SHT45-breakout.
+- TQ-10, TQ-14 en alles daarna op de ketel: wachten op de buslog van TQ-09. TQ-07: wacht op de SHT45-breakout.
 - Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen

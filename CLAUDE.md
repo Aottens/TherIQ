@@ -69,5 +69,5 @@ Aernout is OT/IT-engineer (PLC, SCADA, Ignition) met een UX/HCD-achtergrond. Reg
 
 ## Context
 
-- Aernouts ketel: **Nefit TopLine Compact HRC 25/CW4**, spreekt EMS, geen native OpenTherm. OpenTherm testen we tegen een eigen ketelsimulator (`firmware/ketelsim`) en optioneel via een Nefit EMS-OT-converter.
+- Aernouts ketel: **Nefit TopLine Compact HRC 25/CW4**, spreekt EMS, geen native OpenTherm. OpenTherm is geparkeerd tot nader order (ADR-017): eerst werkt TherIQ voor dit huis, via EMS.
 - De live versie van de spec stond in een Claude-doc; deze repo is vanaf nu leidend.
