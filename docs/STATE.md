@@ -12,6 +12,8 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
   componenten onder `firmware/ketelunit/components/`, zonder IDF-includes; `firmware/host_tests/` test dezelfde bron.
 - De EMS-framelaag staat er: component `ems_frame` (CRC, decode, encode; EMS 1.0 en EMS+), getest met echte
   telegrammen uit EMS-ESP v3.9.1. De firmware gebruikt hem nog niet; dat doet de EMS-driver (TQ-14).
+- De ketel-API staat er: component `boiler_api` (header-only, ADR-020). Snapshot lezen met `state()`, schrijven met
+  `set_flow_setpoint()`/`set_heating()`; start alleen-lezen. TQ-14 implementeert hem, TQ-24 stuurt de ketel ermee.
 - HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
 - OpenTherm is geparkeerd tot nader order (ADR-019): eerst werkt TherIQ voor dit huis, via EMS. TQ-16 t/m TQ-21
   staan onder *Geparkeerd* in de backlog; de gate van fase 0 vraagt geen OpenTherm meer.
@@ -23,10 +25,8 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 Aan de ketel: Aernouts run van TQ-09 (zie *Wacht op Aernout*). Met die log: TQ-10 (ketelbeschrijving), daarna TQ-14
 (EMS-driver op de C6 met hetzelfde bord).
 
-Werk zonder hardware, elk als eigen build of samen voorgesteld op de `Builds:`-regel:
-1. TQ-11: ketel-API (`boiler_api`) als C++-interface met ADR. Daarna weet TQ-14 waar hij heen schrijft.
-2. TQ-22: aan/uit-regelaar met hysterese als pure logica met host tests.
-3. TQ-23: weekschema (nachtverlaging) als pure logica met host tests.
+Werk zonder hardware: Build E, TQ-22 (aan/uit-regelaar met hysterese) + TQ-23 (weekschema met nachtverlaging),
+beide pure logica met host tests. De hysterese-regelaar gebruikt de ketel-API niet; dat doet pas TQ-24.
 
 Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productnaam) als één build die toch flasht.
 
