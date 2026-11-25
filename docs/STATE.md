@@ -39,7 +39,6 @@ Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productn
 - Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen
-- WP0.9: hoe het kamerunit-prototype aan de wand voeding en verbinding krijgt (TQ-26).
 - IDEA-01 (koppelvenster opnieuw openen zonder reset) triëren.
 
 ## Goed om te weten
@@ -53,7 +52,8 @@ Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productn
 - BOOT 10 s = Matter-fabrieksreset met led-aftelling (ADR-014). Bord niet resetten zonder reden.
 - Een extra controller koppelen: Apple Home → accessoire → Schakel koppelmodus in; die code in de andere app.
 - QR-code lokaal: `uvx --from "qrcode[pil]==8.2" qr "MT:..." > qr.png`; niet de `QRCodeUrl` uit de log (website).
-- De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8.
+- De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8. Daarna voedt de thermostaatkabel (2 aders)
+  het kamerunit-prototype (ADR-018).
 - EMS-ESP v3.9.1: *read-only mode* blokkeert schrijfopdrachten maar niet ruwe `send`-telegrammen (pas dicht in
   v3.10.0); *EMS Tx Mode* Off zendt helemaal niets. Het BBQKees-bord is niet galvanisch gescheiden: aan de ketel de
   ESP via een netadapter voeden, niet via de Mac.

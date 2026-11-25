@@ -96,7 +96,9 @@ Elk werkpakket is klaar als het done-criterium aantoonbaar is gehaald. De werkpa
 ### WP0.9 — Kamerunit-prototype aan de wand (mijlpaal 31-12, ADR-008)
 
 - Devkit + SHT45 + e-paper (~2,9") + draaiknop in een 3D-geprinte behuizing (PETG/ASA), bediening volgens SPEC §6.
-- Open vraag, vóór start beslissen: hoe het prototype aan de wand voeding en verbinding krijgt. De bestaande thermostaatkabel is nu de EMS-bus naar de Nefit-thermostaat; de echte kamerbus (D2) is fase 1–2. Opties: tijdelijk wifi + USB-voeding, of de oude thermostaat weghalen en de kabel hergebruiken.
+- Voeding en verbinding (ADR-018): de bestaande thermostaatkabel (2 aders) komt vrij als de oude Nefit-thermostaat in WP0.8 van de
+  EMS-bus gaat. Daarna voedt de ketelunit het prototype over die 2 aders (bv. 12 V, buck-converter aan de wand); data via wifi.
+  Tot dan op het bureau op USB. Aan de ketelkant gaan de aders eerst van de EMS-klemmen af. De echte kamerbus (D2) is fase 1–2.
 - **Klaar als**: hangt aan de wand, toont kamertemperatuur en setpoint, draaien wijzigt het setpoint en dat staat binnen 2 s in Apple Home en HA.
 
 ## Na fase 0
