@@ -13,23 +13,29 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 - De EMS-framelaag staat er: component `ems_frame` (CRC, decode, encode; EMS 1.0 en EMS+), getest met echte
   telegrammen uit EMS-ESP v3.9.1. De firmware gebruikt hem nog niet; dat doet de EMS-driver (TQ-14).
 - HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
+- Het BBQKees EMS Interface Board V3.1 is binnen (2026-11-25). De checklist voor TQ-09 staat klaar:
+  `docs/tests/ems-esp-readonly.md` (EMS-ESP v3.9.1 op de klassieke ESP32, eerst ≥ 24 u met Tx Off, dan read-only;
+  log via syslog naar de Mac met `tools/ems_syslog_capture.py`, ADR-017).
 
 ## Volgende
+Aan de ketel: Aernouts run van TQ-09 (zie *Wacht op Aernout*). Met die log: TQ-10 (ketelbeschrijving), daarna TQ-14
+(EMS-driver op de C6 met hetzelfde bord).
+
 Werk zonder hardware, elk als eigen build of samen voorgesteld op de `Builds:`-regel:
 1. TQ-11: ketel-API (`boiler_api`) als C++-interface met ADR. Daarna weet TQ-14 waar hij heen schrijft.
 2. TQ-16: OpenTherm-frame encode/decode en pariteit met host tests (zelfde patroon als `ems_frame`).
 3. TQ-22: aan/uit-regelaar met hysterese als pure logica met host tests.
 
 Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productnaam) als één build die toch flasht.
-Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), dan TQ-10 en TQ-14.
 
 ## Wacht op Aernout
+- Run TQ-09: `docs/tests/ems-esp-readonly.md` doorlopen; logs en runbestand in een PR. Eerst kijken of de ketel een
+  service-jack heeft en of de BBQKees-jackkabel in huis is (50 cm was op 2026-11-25 uitverkocht).
 - Inkoop (`docs/FASE-0.md`, inkooplijst): bij BerryBase 1× Waveshare ESP32-C6-DEV-KIT-N8, Adafruit SHT45 (5665),
   USB-C-datakabel; bij TinyTronics de logic analyzer. De ketelsimulator wordt later de klassieke ESP32 uit de la.
-  Het **BBQKees EMS Interface Board V3.1** is besteld (2026-11-23) en onderweg.
 
 ## Geblokkeerd
-- TQ-09 en alles daarna op de ketel: wacht op levering van het BBQKees-bord. TQ-07: wacht op de SHT45-breakout.
+- TQ-10 en TQ-14: wachten op de buslog van TQ-09. TQ-07: wacht op de SHT45-breakout.
 - Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen
@@ -48,6 +54,9 @@ Zodra het BBQKees-bord er is: TQ-09 (alleen lezend aan de ketel, 24 u buslog), d
 - Een extra controller koppelen: Apple Home → accessoire → Schakel koppelmodus in; die code in de andere app.
 - QR-code lokaal: `uvx --from "qrcode[pil]==8.2" qr "MT:..." > qr.png`; niet de `QRCodeUrl` uit de log (website).
 - De huidige Nefit-thermostaat blijft op de EMS-bus als terugvaloptie tot WP0.8.
+- EMS-ESP v3.9.1: *read-only mode* blokkeert schrijfopdrachten maar niet ruwe `send`-telegrammen (pas dicht in
+  v3.10.0); *EMS Tx Mode* Off zendt helemaal niets. Het BBQKees-bord is niet galvanisch gescheiden: aan de ketel de
+  ESP via een netadapter voeden, niet via de Mac.
 - Waveshare C6-Zero: flashen lukt niet? BOOT ingedrukt houden bij het insteken van USB. Led wil RGB-volgorde
   (`CONFIG_THERIQ_RGB_LED_ORDER_RGB=y`); op de DevKitC-1 waarschijnlijk GRB.
 - Seriële console via USB: `matter onboardingcodes ble`, `matter config`, `matter esp attribute get 0x1 0x201 0x1c`.
