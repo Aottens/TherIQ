@@ -121,9 +121,10 @@ uvx --from esptool==5.1.0 esptool --chip esp32 --port <poort> --baud 460800 --be
       Port `5514`; Log Level `INFO`; Mark Interval `60`. INFO is nodig om ook een geblokkeerde schrijfpoging
       (`[readonly] ...`) in de log te zien; de telegrammen zelf komen op NOTICE
 - [ ] Telnet staat aan (*Services*, standaard aan in v3.9.1). Opslaan; herstart EMS-ESP als de UI daarom vraagt
-- [ ] *Scheduler* → nieuwe regel: type **Timer**, tijd **00:00** (= één keer bij het opstarten), command
-      `system/watch`, value `raw`, actief. Zonder deze regel staat `watch` na elke herstart uit en stopt de log
-      ongemerkt. Controle: EMS-ESP herstarten; in de syslog verschijnt `Called command system/watch … with value raw`
+- [ ] *Modules* → *Commands* → **Add**: Command `system/watch`, Value `raw`, Name `watchraw`; **Apply changes**.
+      Dan *Modules* → *Scheduler* → **Add**: knop **TIMER**, **Active** aan, tijd **00:00** (*at start-up*), Command
+      `watchraw`, Name `watchstartup`; **Apply changes**. Zonder deze regel staat `watch` na elke herstart uit en stopt
+      de log ongemerkt. Controle: EMS-ESP herstarten; in de syslog verschijnt `Called command system/watch … with value raw`
       (in read-only mode met `[readonly] ` ervoor: dat is een gewoon commando, geen buswrite)
 - [ ] Controle: `nc ems-esp.local 23` (macOS heeft geen `telnet` meer), dan `show ems`: `Tx mode: 0`. Ctrl-C
 - [ ] ESP32 van de Mac af. Vanaf nu voeding via de **USB-netadapter**, niet via de Mac: het interfacebord is niet
