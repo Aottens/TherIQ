@@ -56,20 +56,25 @@ WeekSchedule test_week()
     return week;
 }
 
-// The default schedule in code (ADR-021): every day 16:30 -> 18.5 °C,
-// 21:30 -> 15.5 °C. Before 16:30 the night value of the day before holds.
+// The default schedule in code (ADR-021): weekdays 16:30 -> 18.5 °C,
+// Saturday and Sunday from 10:00; every day 21:30 -> 15.5 °C. Before the first
+// switch moment the night value of the day before holds.
 void test_default_week()
 {
     const WeekSchedule week = control::default_week();
-    for (const auto &day : week) {
+    for (int d = kMonday; d <= kSunday; ++d) {
+        const auto &day = week[d];
+        const uint16_t warm = d >= kSaturday ? hm(10, 0) : hm(16, 30);
         assert(day.size() == 2);
-        assert(day[0].minute == hm(16, 30) && day[0].setpoint_c == 18.5f);
+        assert(day[0].minute == warm && day[0].setpoint_c == 18.5f);
         assert(day[1].minute == hm(21, 30) && day[1].setpoint_c == 15.5f);
     }
     Schedule s(week);
     expect(s.update({kTuesday, hm(12, 0)}), 15.5f, {kTuesday, hm(16, 30)}, false);
     expect(s.update({kTuesday, hm(16, 30)}), 18.5f, {kTuesday, hm(21, 30)}, false);
-    expect(s.update({kTuesday, hm(21, 30)}), 15.5f, {kWednesday, hm(16, 30)}, false);
+    expect(s.update({kFriday, hm(21, 30)}), 15.5f, {kSaturday, hm(10, 0)}, false);
+    expect(s.update({kSaturday, hm(10, 0)}), 18.5f, {kSaturday, hm(21, 30)}, false);
+    expect(s.update({kSunday, hm(21, 30)}), 15.5f, {kMonday, hm(16, 30)}, false);
 }
 
 // Night setback starts at 22:30 and ends at 06:30; the switch minute itself

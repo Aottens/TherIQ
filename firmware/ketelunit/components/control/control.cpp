@@ -112,8 +112,9 @@ std::optional<Lookup> lookup(const WeekSchedule &week, int now)
 WeekSchedule default_week()
 {
     WeekSchedule week;
-    for (DaySchedule &day : week) {
-        day = {{16 * 60 + 30, 18.5f}, {21 * 60 + 30, 15.5f}};
+    for (int d = kMonday; d <= kSunday; ++d) {
+        const uint16_t warm = d >= kSaturday ? 10 * 60 : 16 * 60 + 30;
+        week[d] = {{warm, 18.5f}, {21 * 60 + 30, 15.5f}};
     }
     return week;
 }
