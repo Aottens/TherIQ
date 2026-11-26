@@ -48,3 +48,7 @@ target_link_libraries(control PUBLIC boiler_api)
 add_executable(test_onoff_controller test_onoff_controller.cpp)
 target_link_libraries(test_onoff_controller control)
 add_test(NAME TQ-22_onoff_controller COMMAND test_onoff_controller)
+
+add_executable(test_week_schedule test_week_schedule.cpp)
+target_link_libraries(test_week_schedule control)
+add_test(NAME TQ-23_week_schedule COMMAND test_week_schedule)

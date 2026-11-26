@@ -12,10 +12,18 @@
 //
 // The band in between is what stops the boiler from chattering on and off
 // when the room temperature hovers around the setpoint.
+//
+// Week schedule (TQ-23), below the controller. Like a weekly time-switch
+// clock: per weekday a list of switch moments, each with a setpoint. A manual
+// setpoint holds until the next switch moment, then the schedule takes over.
 
 #pragma once
 
+#include <array>
 #include <cstdint>
+#include <optional>
+#include <utility>
+#include <vector>
 
 #include "boiler_api.h"
 
@@ -51,6 +59,74 @@ public:
 private:
     OnOffParams params_;
     bool demand_ = false;  // the flip-flop's state
+};
+
+// ---------------------------------------------------------------------------
+// Week schedule (TQ-23)
+// ---------------------------------------------------------------------------
+
+// 0 = Monday. Note: struct tm's tm_wday has 0 = Sunday; the time layer that
+// fills LocalTime converts. Unscoped so the constants index a WeekSchedule
+// directly: week[kSaturday].
+enum Weekday : uint8_t { kMonday, kTuesday, kWednesday, kThursday, kFriday, kSaturday, kSunday };
+
+// Local wall-clock time, daylight saving time included. This component has no
+// clock: SNTP and the time zone live in the layer that provides the time.
+struct LocalTime {
+    uint8_t weekday;  // Weekday, 0 = Monday
+    uint16_t minute;  // minute of the day, 0..1439
+};
+
+// From `minute` of the day on, the setpoint is `setpoint_c`.
+struct SwitchPoint {
+    uint16_t minute;  // minute of the day, 0..1439
+    float setpoint_c;
+};
+
+// Precondition: sorted by minute, earliest first. An empty day keeps the last
+// setpoint of the day before.
+using DaySchedule = std::vector<SwitchPoint>;
+using WeekSchedule = std::array<DaySchedule, 7>;  // indexed by Weekday
+
+// Every day 06:30 -> 20.0 °C, 22:30 -> 16.0 °C (night setback). The default
+// in code until the schedule is stored in NVS and can be edited.
+WeekSchedule default_week();
+
+// What the schedule says right now.
+struct ScheduledSetpoint {
+    float setpoint_c;
+    LocalTime until;  // the next switch moment: the display's "tot 22:30"
+    bool manual;      // true while a manual setpoint holds
+};
+
+class Schedule {
+public:
+    explicit Schedule(WeekSchedule week) : week_(std::move(week)) {}
+
+    // The setpoint at `now`. std::nullopt when the week has no switch moment
+    // at all; the caller then keeps its own setpoint. Not const: it clears a
+    // manual setpoint once its switch moment has passed.
+    //
+    // A manual setpoint counts down like a PLC timer, by the time between
+    // calls. A step back of up to two hours (DST ending, an SNTP correction)
+    // counts back up, so it still ends at the switch moment on the wall
+    // clock. A jump forward counts as time passed: feed it only once the
+    // clock is set (TQ-24). The caller must call this at least once a week
+    // minus two hours (the control loop does every few seconds), otherwise a
+    // stale manual setpoint could look valid again.
+    std::optional<ScheduledSetpoint> update(LocalTime now);
+
+    // Overrides the schedule from `now` until the next switch moment. A newer
+    // manual setpoint replaces the older one.
+    void set_manual(float setpoint_c, LocalTime now);
+
+private:
+    WeekSchedule week_;
+    // The manual setpoint; inactive when remaining_min_ == 0.
+    float manual_c_ = 0.0f;
+    LocalTime manual_until_{};
+    uint32_t remaining_min_ = 0;  // minutes until manual_until_
+    LocalTime last_{};            // time of the last set_manual/update
 };
 
 }  // namespace control
