@@ -120,6 +120,10 @@ uvx --from esptool==5.1.0 esptool --chip esp32 --port <poort> --baud 460800 --be
 - [ ] *Services* → *Syslog*: **Enable Syslog** aan; Host = IP van de Mac (`ipconfig getifaddr en0`: ________);
       Port `5514`; Log Level `INFO`; Mark Interval `60`. INFO is nodig om ook een geblokkeerde schrijfpoging
       (`[readonly] ...`) in de log te zien; de telegrammen zelf komen op NOTICE
+- [ ] IP van de Mac vast: wifi-*Details…* → **Privé-wifiadres** = Uit (een privé-adres wisselt en krijgt dan een
+      ander IP; `ifconfig en0 | grep ether` toont dan een adres met `2`, `6`, `A` of `E` als tweede teken), en in
+      de router een vaste koppeling voor de Mac en voor `ems-esp`. Andere bekende wifinetwerken: *Verbind
+      automatisch* uit, anders springt de Mac bij een routerherstart naar een ander netwerk en loopt de log leeg
 - [ ] Telnet staat aan (*Services*, standaard aan in v3.9.1). Opslaan; herstart EMS-ESP als de UI daarom vraagt
 - [ ] *Modules* → *Commands* → **Add**: Command `system/watch`, Value `raw`, Name `watchraw`; **Apply changes**.
       Dan *Modules* → *Scheduler* → **Add**: knop **TIMER**, **Active** aan, tijd **00:00** (*at start-up*), Command
@@ -167,7 +171,9 @@ caffeinate -i python3 tools/ems_syslog_capture.py docs/ketels/logs/<datum>-txoff
       `2026-11-25T20:31:08.937<TAB><117>1 2026-11-25T20:32:11.000000+01:00 ems-esp telegram - - - 000+00:02:27.342 N 21: Rx: 08 00 34 00 …`.
       Velden: tijd van de Mac, syslog-kop met de tijd van EMS-ESP (overgenomen uit het tijdtelegram `06` van de
       thermostaat; die klok liep op 2026-11-25 ruim een minuut vóór), uptime van EMS-ESP (dagen+uu:mm:ss.mmm),
-      niveau (`N` = NOTICE), volgnummer van de logregel, en de ruwe bytes inclusief CRC. Polls (één byte) staan er niet in
+      niveau (`N` = NOTICE), volgnummer van de logregel, en de ruwe bytes inclusief CRC. Polls (één byte) staan er niet in.
+      Regels `W … Tx queue overflow, skip one message` zijn verwacht: EMS-ESP zet leesvragen klaar die met Tx Off nooit
+      verstuurd worden, en gooit bij een volle wachtrij de oudste weg
 - [ ] **Bus gezien**: `grep -c 'Rx:' <log>` > 0 na een minuut: ________
 - [ ] **Ketel gezien** (afzender `08`): `grep -c 'Rx: 08 ' <log>` > 0: ________
 - [ ] **Thermostaat gezien**: `grep -cE 'Rx: (10|17|18) ' <log>`: ________; adres van de thermostaat: ________
