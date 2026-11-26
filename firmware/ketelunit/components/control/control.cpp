@@ -113,7 +113,7 @@ WeekSchedule default_week()
 {
     WeekSchedule week;
     for (DaySchedule &day : week) {
-        day = {{6 * 60 + 30, 20.0f}, {22 * 60 + 30, 16.0f}};
+        day = {{16 * 60 + 30, 18.5f}, {21 * 60 + 30, 15.5f}};
     }
     return week;
 }

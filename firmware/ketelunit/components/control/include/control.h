@@ -88,8 +88,10 @@ struct SwitchPoint {
 using DaySchedule = std::vector<SwitchPoint>;
 using WeekSchedule = std::array<DaySchedule, 7>;  // indexed by Weekday
 
-// Every day 06:30 -> 20.0 °C, 22:30 -> 16.0 °C (night setback). The default
-// in code until the schedule is stored in NVS and can be edited.
+// Every day 16:30 -> 18.5 °C, 21:30 -> 15.5 °C: Aernout's weekdays, heating
+// only in the evening (ADR-021). Before 16:30 the 15.5 °C of the night before
+// holds. The default in code until the schedule is stored in NVS and can be
+// edited (IDEA-02).
 WeekSchedule default_week();
 
 // What the schedule says right now.

@@ -45,22 +45,38 @@ void expect(const std::optional<ScheduledSetpoint> &got, float setpoint_c,
     assert(got->manual == manual);
 }
 
-// The default schedule in code: night setback every day, 22:30 to 06:30.
+// A fixed week for the tests below, independent of the default in code:
+// every day 06:30 -> 20.0 °C, 22:30 -> 16.0 °C.
+WeekSchedule test_week()
+{
+    WeekSchedule week;
+    for (auto &day : week) {
+        day = {{hm(6, 30), 20.0f}, {hm(22, 30), 16.0f}};
+    }
+    return week;
+}
+
+// The default schedule in code (ADR-021): every day 16:30 -> 18.5 °C,
+// 21:30 -> 15.5 °C. Before 16:30 the night value of the day before holds.
 void test_default_week()
 {
     const WeekSchedule week = control::default_week();
     for (const auto &day : week) {
         assert(day.size() == 2);
-        assert(day[0].minute == hm(6, 30) && day[0].setpoint_c == 20.0f);
-        assert(day[1].minute == hm(22, 30) && day[1].setpoint_c == 16.0f);
+        assert(day[0].minute == hm(16, 30) && day[0].setpoint_c == 18.5f);
+        assert(day[1].minute == hm(21, 30) && day[1].setpoint_c == 15.5f);
     }
+    Schedule s(week);
+    expect(s.update({kTuesday, hm(12, 0)}), 15.5f, {kTuesday, hm(16, 30)}, false);
+    expect(s.update({kTuesday, hm(16, 30)}), 18.5f, {kTuesday, hm(21, 30)}, false);
+    expect(s.update({kTuesday, hm(21, 30)}), 15.5f, {kWednesday, hm(16, 30)}, false);
 }
 
 // Night setback starts at 22:30 and ends at 06:30; the switch minute itself
 // already has the new value.
 void test_night_setback()
 {
-    Schedule s(control::default_week());
+    Schedule s(test_week());
     expect(s.update({kMonday, hm(3, 0)}), 16.0f, {kMonday, hm(6, 30)}, false);
     expect(s.update({kMonday, hm(6, 29)}), 16.0f, {kMonday, hm(6, 30)}, false);
     expect(s.update({kMonday, hm(6, 30)}), 20.0f, {kMonday, hm(22, 30)}, false);
@@ -71,7 +87,7 @@ void test_night_setback()
 // Over midnight the last value of the day before carries on.
 void test_midnight()
 {
-    Schedule s(control::default_week());
+    Schedule s(test_week());
     expect(s.update({kMonday, hm(23, 59)}), 16.0f, {kTuesday, hm(6, 30)}, false);
     expect(s.update({kTuesday, hm(0, 0)}), 16.0f, {kTuesday, hm(6, 30)}, false);
 }
@@ -79,7 +95,7 @@ void test_midnight()
 // Sunday to Monday: the week wraps around.
 void test_sunday_to_monday()
 {
-    WeekSchedule week = control::default_week();
+    WeekSchedule week = test_week();
     week[kSunday] = {{hm(8, 0), 21.0f}, {hm(23, 0), 15.0f}};
     week[kMonday] = {{hm(7, 0), 19.0f}};
     Schedule s(week);
@@ -93,7 +109,7 @@ void test_sunday_to_monday()
 // so does a run of empty days.
 void test_empty_days()
 {
-    WeekSchedule week = control::default_week();
+    WeekSchedule week = test_week();
     week[kSaturday].clear();
     Schedule s(week);
     expect(s.update({kSaturday, hm(12, 0)}), 16.0f, {kSunday, hm(6, 30)}, false);
@@ -108,7 +124,7 @@ void test_empty_days()
 // before it is still manual, the switch minute is the schedule again.
 void test_manual_until_next_switch()
 {
-    Schedule s(control::default_week());
+    Schedule s(test_week());
     s.set_manual(22.0f, {kMonday, hm(10, 0)});
     expect(s.update({kMonday, hm(10, 0)}), 22.0f, {kMonday, hm(22, 30)}, true);
     expect(s.update({kMonday, hm(22, 29)}), 22.0f, {kMonday, hm(22, 30)}, true);
@@ -120,7 +136,7 @@ void test_manual_until_next_switch()
 // A newer manual setpoint replaces the older one.
 void test_manual_replaced()
 {
-    Schedule s(control::default_week());
+    Schedule s(test_week());
     s.set_manual(22.0f, {kMonday, hm(10, 0)});
     s.set_manual(18.5f, {kMonday, hm(11, 0)});
     expect(s.update({kMonday, hm(11, 0)}), 18.5f, {kMonday, hm(22, 30)}, true);
@@ -130,7 +146,7 @@ void test_manual_replaced()
 // the next switch moment.
 void test_manual_over_midnight_and_week_end()
 {
-    Schedule s(control::default_week());
+    Schedule s(test_week());
     s.set_manual(19.0f, {kMonday, hm(23, 0)});
     expect(s.update({kTuesday, hm(3, 0)}), 19.0f, {kTuesday, hm(6, 30)}, true);
     expect(s.update({kTuesday, hm(6, 30)}), 20.0f, {kTuesday, hm(22, 30)}, false);
@@ -161,7 +177,7 @@ void test_single_switch_moment()
 // hour early or late.
 void test_manual_clock_steps_back()
 {
-    Schedule s(control::default_week());
+    Schedule s(test_week());
     s.set_manual(21.0f, {kSunday, hm(1, 0)});
     expect(s.update({kSunday, hm(3, 0)}), 21.0f, {kSunday, hm(6, 30)}, true);
     expect(s.update({kSunday, hm(2, 0)}), 21.0f, {kSunday, hm(6, 30)}, true);
