@@ -12,3 +12,5 @@ het expliciet naar voren haalt. Dwingt een idee nu al een beslissing af, dan kom
 | Id | Idee | Status | Fase |
 | --- | --- | --- | --- |
 | IDEA-01 | Koppelvenster opnieuw openen zonder reset: een korte druk op BOOT (of later de draaiknop of web-UI) start BLE-adverteren opnieuw als het bord nog geen fabric heeft. Nu sluit het venster ~15 min na opstarten (deelrun TQ-06, 2026-11-19). | nieuw | 0 of 2 |
+| IDEA-02 | Weekschema in NVS bewaren en bewerken via de web-UI en HA (SPEC §7, *Modi en schema*). Nu staat er alleen een standaardschema in code (ADR-021, TQ-23). | nieuw | 1 |
+| IDEA-03 | Vorstbeveiliging van het huis in modus Uit (SPEC §7, *Modi*): onder bv. 6 °C toch stoken. De regelaar van TQ-22 is in Uit nu altijd uit (ADR-021). | nieuw | 0 of 1 |
