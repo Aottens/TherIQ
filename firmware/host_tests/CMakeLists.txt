@@ -30,3 +30,11 @@ add_test(NAME TQ-03_ems_crc COMMAND test_ems_crc)
 add_executable(test_ems_frame test_ems_frame.cpp)
 target_link_libraries(test_ems_frame ems_frame)
 add_test(NAME TQ-12_ems_frame COMMAND test_ems_frame)
+
+# Header-only: nothing to compile, only the include path.
+add_library(boiler_api INTERFACE)
+target_include_directories(boiler_api INTERFACE ${COMPONENTS}/boiler_api/include)
+
+add_executable(test_boiler_api test_boiler_api.cpp)
+target_link_libraries(test_boiler_api boiler_api)
+add_test(NAME TQ-11_boiler_api COMMAND test_boiler_api)

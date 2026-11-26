@@ -12,6 +12,7 @@ Status (eerste woord van de cel): `todo` · `doing` · `done` · `gate3` · `blo
 Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 Build B: TQ-03 + TQ-12 (klaar, #6).
 Build C: TQ-09 (checklist en logroute; gate 3: Aernouts run aan de ketel).
+Build D: TQ-11 (klaar, #14).
 
 ## Fase 0 — bewijs op devkits
 
@@ -27,7 +28,7 @@ Build C: TQ-09 (checklist en logroute; gate 3: Aernouts run aan de ketel).
 | TQ-08 | Temperatuur in Apple Home en HA wijkt < 0,3 °C af van een referentiethermometer naast de sensor. | WP0.3 | S | todo |
 | TQ-09 | BBQKees-interfacebord met EMS-ESP op een klassieke ESP32 hangt alleen lezend aan de ketel; ruwe buslog van ≥ 24 u staat in `docs/ketels/logs/`. | WP0.4 | M | gate3: `docs/tests/ems-esp-readonly.md` (ADR-017) |
 | TQ-10 | `docs/ketels/nefit-topline-compact-hrc25-cw4.md` beschrijft lees-/schrijfwaarden, pollritme en antwoordtijden uit de log. | WP0.4 | S | todo |
-| TQ-11 | Ketel-API (`boiler_api`) als C++-interface met ADR: setpoint, CV aan/uit, status, modulatie, aanvoer/retour, druk, buiten, storing. | WP0.5 | S | todo |
+| TQ-11 | Ketel-API (`boiler_api`) als C++-interface met ADR: setpoint, CV aan/uit, status, modulatie, aanvoer/retour, druk, buiten, storing. | WP0.5 | S | done (2026-11-25, #14; ADR-020) |
 | TQ-12 | EMS-frame encode/decode en CRC met host tests (protocolkennis uit EMS-ESP, bronvermelding en NOTICE). | WP0.5 | M | done (2026-11-23, #6) |
 | TQ-13 | EMS-interface voor de C6 gekozen en besteld. | WP0.5 | S | done (2026-11-18, ADR-013) |
 | TQ-14 | EMS-driver (UART 9600, break-detectie) leest aanvoer, retour en modulatie van de eigen ketel. | WP0.5 | L | todo |
