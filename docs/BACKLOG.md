@@ -13,6 +13,7 @@ Build A: TQ-04 + TQ-05 (klaar, #1 en #2).
 Build B: TQ-03 + TQ-12 (klaar, #6).
 Build C: TQ-09 (checklist en logroute; gate 3: Aernouts run aan de ketel).
 Build D: TQ-11 (klaar, #14).
+Build E: TQ-22 + TQ-23 (klaar, #16).
 
 ## Fase 0 — bewijs op devkits
 
@@ -33,8 +34,8 @@ Build D: TQ-11 (klaar, #14).
 | TQ-13 | EMS-interface voor de C6 gekozen en besteld. | WP0.5 | S | done (2026-11-18, ADR-013) |
 | TQ-14 | EMS-driver (UART 9600, break-detectie) leest aanvoer, retour en modulatie van de eigen ketel. | WP0.5 | L | todo |
 | TQ-15 | Na akkoord schrijft de firmware een aanvoersetpoint en volgt de ketel dat aantoonbaar (log); terugweg beschreven. | WP0.5 | M | todo |
-| TQ-22 | Aan/uit-regelaar met hysterese als pure logica met host tests. | WP0.8 | S | todo |
-| TQ-23 | Weekschema op het apparaat (minimaal nachtverlaging); handmatige wijziging geldt tot het volgende schakelmoment; host tests. | WP0.8 | M | todo |
+| TQ-22 | Aan/uit-regelaar met hysterese als pure logica met host tests. | WP0.8 | S | done (2026-11-26, #16; ADR-021) |
+| TQ-23 | Weekschema op het apparaat (minimaal nachtverlaging); handmatige wijziging geldt tot het volgende schakelmoment; host tests. | WP0.8 | M | done (2026-11-26, #16; ADR-021) |
 | TQ-24 | Lus gesloten: Matter-setpoint en SHT45 sturen via de ketel-API de ketel aan/uit. | WP0.8 | M | todo |
 | TQ-25 | Na akkoord 48 u stoken op de eigen ketel zonder ingrijpen, met log; bediening vanuit Apple Home én HA. | WP0.8 | S | todo |
 | TQ-26 | Voeding en verbinding van het kamerunit-prototype beslist (ADR). | WP0.9 | S | done (2026-11-23, #9; ADR-018) |

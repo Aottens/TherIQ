@@ -14,6 +14,9 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
   telegrammen uit EMS-ESP v3.9.1. De firmware gebruikt hem nog niet; dat doet de EMS-driver (TQ-14).
 - De ketel-API staat er: component `boiler_api` (header-only, ADR-020). Snapshot lezen met `state()`, schrijven met
   `set_flow_setpoint()`/`set_heating()`; start alleen-lezen. TQ-14 implementeert hem, TQ-24 stuurt de ketel ermee.
+- De kamerregeling staat er als pure logica: component `control` (ADR-021). `OnOffController` (hysterese 0,2/0,2 °C,
+  uit bij een weggevallen of verouderde kamermeting) en `Schedule` (weekschema met nachtverlaging, handmatige wijziging
+  tot het volgende schakelmoment). Nog niet aangeroepen in `main`; dat doet TQ-24.
 - HA draait op HA OS op een Raspberry Pi 4 (192.168.50.39) met de Matter-integratie.
 - OpenTherm is geparkeerd tot nader order (ADR-019): eerst werkt TherIQ voor dit huis, via EMS. TQ-16 t/m TQ-21
   staan onder *Geparkeerd* in de backlog; de gate van fase 0 vraagt geen OpenTherm meer.
@@ -25,8 +28,7 @@ is staat in `BACKLOG.md`, waarom in `DECISIONS.md`. Herschrijven, nooit aanvulle
 Aan de ketel: Aernouts run van TQ-09 (zie *Wacht op Aernout*). Met die log: TQ-10 (ketelbeschrijving), daarna TQ-14
 (EMS-driver op de C6 met hetzelfde bord).
 
-Werk zonder hardware: Build E, TQ-22 (aan/uit-regelaar met hysterese) + TQ-23 (weekschema met nachtverlaging),
-beide pure logica met host tests. De hysterese-regelaar gebruikt de ketel-API niet; dat doet pas TQ-24.
+Werk zonder hardware is op: TQ-24 (lus sluiten) wacht op de SHT45 (TQ-07) en de EMS-driver (TQ-14).
 
 Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productnaam) als één build die toch flasht.
 
@@ -40,11 +42,11 @@ Zodra de SHT45-breakout er is: TQ-07 (SHT45-driver) + TQ-31 (vendor- en productn
   logic analyzer. E-paper en encoder eerst: zonder die twee kan TQ-27 niet beginnen.
 
 ## Geblokkeerd
-- TQ-10 en TQ-14: wachten op de buslog van TQ-09. TQ-07: wacht op de SHT45-breakout.
+- TQ-10 en TQ-14: wachten op de buslog van TQ-09. TQ-07: wacht op de SHT45-breakout. TQ-24: wacht op TQ-07 en TQ-14.
 - Gate van fase 0: R1 wacht op TQ-29 (kamerunit aan de wand).
 
 ## Aan Aernout te beslissen
-- IDEA-01 (koppelvenster opnieuw openen zonder reset) triëren.
+- IDEA-01 t/m IDEA-03 triëren: koppelvenster zonder reset, schema in NVS en bewerken, vorstbeveiliging in Uit.
 
 ## Goed om te weten
 - Host tests lokaal (alleen `cmake` en een compiler, geen Docker), vanuit de repo-root:
