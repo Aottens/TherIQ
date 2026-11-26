@@ -38,3 +38,13 @@ target_include_directories(boiler_api INTERFACE ${COMPONENTS}/boiler_api/include
 add_executable(test_boiler_api test_boiler_api.cpp)
 target_link_libraries(test_boiler_api boiler_api)
 add_test(NAME TQ-11_boiler_api COMMAND test_boiler_api)
+
+# Room control: on/off with hysteresis (TQ-22) and the week schedule (TQ-23).
+# Uses boiler::Reading for the room temperature, not the Boiler class.
+add_library(control ${COMPONENTS}/control/control.cpp)
+target_include_directories(control PUBLIC ${COMPONENTS}/control/include)
+target_link_libraries(control PUBLIC boiler_api)
+
+add_executable(test_onoff_controller test_onoff_controller.cpp)
+target_link_libraries(test_onoff_controller control)
+add_test(NAME TQ-22_onoff_controller COMMAND test_onoff_controller)
